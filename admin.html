@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Penjual — ARFELYA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <script src="auth.js"></script>
+  <script>
+    /* ===== GATE LOGIN: wajib login sebagai ADMIN sebelum masuk dashboard ===== */
+    window.addEventListener('DOMContentLoaded', function () {
+      var session = window.ArfelyaAuth ? window.ArfelyaAuth.getSession() : null;
+      if (!session || session.role !== 'admin') {
+        window.ArfelyaAuth.openLoginModal({
+          mode: 'admin',
+          onSuccess: function () { window.location.reload(); },
+          onClose: function () { window.location.href = 'index.html'; }
+        });
+      }
+    });
+  </script>
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #070412;
+      color: #e2d4f7;
+      min-height: 100vh;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 10% 30%, rgba(124,58,237,.1) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 10%, rgba(219,39,119,.07) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 90%, rgba(14,165,233,.05) 0%, transparent 55%);
+    }
+
+    /* ============================================================
+       TOPBAR
+    ============================================================ */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(7,4,18,.92); backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(192,132,252,.18);
+      display: flex; align-items: center; padding: 0 24px; height: 60px; gap: 16px;
+    }
+    .topbar-logo {
+      font-family: 'DM Serif Display', serif; font-size: 18px; letter-spacing: 1px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+    .topbar-sep { width: 1px; height: 22px; background: rgba(192,132,252,.18); }
+    .topbar-sub { font-size: 12px; color: #6b5d88; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+
+    /* Notif bell */
+    .notif-bell {
+      position: relative; cursor: pointer;
+      background: rgba(192,132,252,.08); border: 1px solid rgba(192,132,252,.2);
+      border-radius: 50%; width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; transition: background .2s;
+    }
+    .notif-bell:hover { background: rgba(192,132,252,.16); }
+    .notif-dot {
+      position: absolute; top: 4px; right: 4px;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #f472b6; border: 1.5px solid #070412;
+      display: none;
+    }
+    .notif-dot.show { display: block; animation: pulse-dot 1.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:.7} }
+
+    .btn-toko {
+      display: flex; align-items: center; gap: 6px; text-decoration: none;
+      background: rgba(255,255,255,.05); border: 1px solid rgba(192,132,252,.2);
+      border-radius: 50px; padding: 6px 16px;
+      font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+      color: #c4b5e8; transition: all .2s; white-space: nowrap;
+    }
+    .btn-toko:hover { background: rgba(192,132,252,.1); color: #f0e6ff; }
+
+    .btn-dummy {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(251,191,36,.08); border: 1px solid rgba(251,191,36,.2);
+      border-radius: 50px; padding: 6px 14px; cursor: pointer;
+      font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600;
+      color: #fbbf24; transition: all .2s; white-space: nowrap;
+    }
+    .btn-dummy:hover { background: rgba(251,191,36,.14); }
+
+    /* ============================================================
+       STATS ROW
+    ============================================================ */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px; padding: 22px 24px 0;
+    }
+    @media (max-width: 900px) { .stats-row { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 580px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+
+    .stat-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(192,132,252,.1);
+      border-radius: 16px; padding: 18px 20px;
+      position: relative; overflow: hidden;
+      transition: border-color .25s, transform .25s;
+      cursor: default;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--g);
+    }
+    .stat-card:hover { border-color: rgba(192,132,252,.25); transform: translateY(-2px); }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .stat-icon-wrap {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--gi, rgba(192,132,252,.1));
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .stat-trend { font-size: 10px; font-weight: 700; color: #34d399; letter-spacing: .3px; }
+    .stat-val {
+      font-family: 'DM Serif Display', serif; font-size: 28px; line-height: 1;
+      background: var(--g); -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stat-lbl { font-size: 11px; color: #5c4e78; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-top: 5px; }
+
+    /* ============================================================
+       TOOLBAR
+    ============================================================ */
+    .toolbar {
+      padding: 18px 24px 0;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .section-heading {
+      font-family: 'DM Serif Display', serif; font-size: 20px; color: #f0e6ff;
+      flex: 1; min-width: 100px;
+    }
+    .search-wrap { position: relative; flex: 0 1 280px; }
+    .search-wrap input {
+      width: 100%; padding: 9px 16px 9px 38px;
+      background: rgba(15,10,30,.8); border: 1px solid rgba(147,51,234,.3);
+      border-radius: 50px; font-family: 'Outfit', sans-serif;
+      font-size: 13px; color: #f0e6ff; outline: none; transition: border-color .2s;
+    }
+    .search-wrap input::placeholder { color: #5c4e78; }
+    .search-wrap input:focus { border-color: #c084fc; box-shadow: 0 0 0 2px rgba(192,132,252,.1); }
+    .search-wrap::before {
+      content: '🔍'; position: absolute; left: 13px; top: 50%;
+      transform: translateY(-50%); font-size: 13px; pointer-events: none;
+    }
+
+    .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
+    .f-btn {
+      padding: 7px 14px; border-radius: 50px;
+      border: 1.5px solid rgba(147,51,234,.2);
+      background: rgba(147,51,234,.05); color: #9d8fc2;
+      font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .5px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .f-btn .f-count {
+      background: rgba(192,132,252,.15); border-radius: 50px;
+      padding: 1px 7px; font-size: 10px; color: #c084fc;
+    }
+    .f-btn:hover, .f-btn.active {
+      background: rgba(124,58,237,.18); border-color: rgba(192,132,252,.4); color: #f0e6ff;
+    }
+    .f-btn.active .f-count { background: rgba(192,132,252,.25); }
+
+    .btn-del-all {
+      padding: 7px 14px; border-radius: 50px;
+      border: 1.5px solid rgba(239,68,68,.2); background: rgba(239,68,68,.05);
+      color: #f87171; font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+      cursor: pointer; transition: all .2s; text-transform: uppercase; letter-spacing: .5px;
+    }
+    .btn-del-all:hover { background: rgba(239,68,68,.12); border-color: rgba(239,68,68,.4); }
+
+    /* ============================================================
+       ORDERS AREA
+    ============================================================ */
+    .orders-area { padding: 16px 24px 60px; }
+
+    /* Empty */
+    .empty-box {
+      text-align: center; padding: 80px 20px;
+      background: rgba(255,255,255,.02); border: 1px dashed rgba(192,132,252,.15);
+      border-radius: 20px; margin-top: 4px;
+    }
+    .empty-box .e-icon { font-size: 52px; margin-bottom: 14px; opacity: .6; }
+    .empty-box p { font-size: 14px; color: #5c4e78; line-height: 1.7; }
+
+    /* Order card */
+    .o-card {
+      background: rgba(255,255,255,.025);
+      border: 1px solid rgba(192,132,252,.1);
+      border-radius: 16px; margin-bottom: 12px; overflow: hidden;
+      transition: border-color .25s, box-shadow .25s;
+      animation: fadeUp .3s ease both;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .o-card.new-order { border-color: rgba(244,114,182,.4); box-shadow: 0 0 0 1px rgba(244,114,182,.15); }
+    .o-card:hover { border-color: rgba(192,132,252,.28); box-shadow: 0 6px 24px rgba(124,58,237,.1); }
+
+    /* Card header */
+    .o-head {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 20px; cursor: pointer; user-select: none;
+    }
+    .o-num {
+      font-size: 10px; font-weight: 800; letter-spacing: .6px;
+      background: rgba(192,132,252,.12); border: 1px solid rgba(192,132,252,.18);
+      border-radius: 7px; padding: 3px 9px; color: #c084fc; white-space: nowrap; flex-shrink: 0;
+    }
+    .o-new-tag {
+      font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px;
+      background: rgba(244,114,182,.18); border: 1px solid rgba(244,114,182,.3);
+      border-radius: 6px; padding: 2px 8px; color: #f472b6; flex-shrink: 0;
+    }
+    .o-info { flex: 1; min-width: 0; }
+    .o-name { font-size: 14px; font-weight: 700; color: #f0e6ff; }
+    .o-item {
+      font-size: 12px; color: #5c4e78; margin-top: 2px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 340px;
+    }
+    .o-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; flex-wrap: wrap; }
+    .o-price {
+      font-family: 'DM Serif Display', serif; font-size: 17px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+    }
+    .o-time { font-size: 11px; color: #4a3d62; white-space: nowrap; }
+    .o-arrow { font-size: 11px; color: #4a3d62; transition: transform .3s; flex-shrink: 0; }
+    .o-card.open .o-arrow { transform: rotate(180deg); }
+
+    /* Status badges */
+    .sbadge {
+      font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 50px;
+      display: inline-flex; align-items: center; gap: 4px;
+      letter-spacing: .4px; white-space: nowrap;
+    }
+    .sbadge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; opacity: .7; }
+    .s-tunggu  { background: rgba(251,191,36,.1);  color: #fbbf24; border: 1px solid rgba(251,191,36,.25); }
+    .s-proses  { background: rgba(96,165,250,.1);  color: #60a5fa; border: 1px solid rgba(96,165,250,.25); }
+    .s-kirim   { background: rgba(52,211,153,.1);  color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+    .s-selesai { background: rgba(192,132,252,.1); color: #c084fc; border: 1px solid rgba(192,132,252,.25); }
+    .s-batal   { background: rgba(239,68,68,.1);   color: #f87171; border: 1px solid rgba(239,68,68,.25); }
+
+    /* Expanded body */
+    .o-body { display: none; padding: 0 20px 20px; }
+    .o-card.open .o-body { display: block; }
+    .o-divider { height: 1px; background: rgba(192,132,252,.08); margin-bottom: 16px; }
+
+    .d-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 16px; }
+    .d-cell {
+      background: rgba(255,255,255,.025); border-radius: 10px; padding: 12px 14px;
+    }
+    .d-lbl { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #4a3d62; margin-bottom: 5px; }
+    .d-val { font-size: 13px; color: #e2d4f7; font-weight: 600; line-height: 1.4; word-break: break-word; }
+
+    /* Total highlight row */
+    .total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(124,58,237,.08); border: 1px solid rgba(192,132,252,.15);
+      border-radius: 12px; padding: 12px 16px; margin-bottom: 16px;
+    }
+    .total-row-lbl { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #9d8fc2; }
+    .total-row-val {
+      font-family: 'DM Serif Display', serif; font-size: 22px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* Action buttons */
+    .o-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .a-btn {
+      padding: 7px 14px; border-radius: 8px; border: 1px solid transparent;
+      font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
+      cursor: pointer; transition: all .2s; letter-spacing: .3px;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .a-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+    .a-proses  { background: rgba(96,165,250,.12);  color: #60a5fa;  border-color: rgba(96,165,250,.25); }
+    .a-kirim   { background: rgba(52,211,153,.12);  color: #34d399;  border-color: rgba(52,211,153,.25); }
+    .a-selesai { background: rgba(192,132,252,.12); color: #c084fc;  border-color: rgba(192,132,252,.25); }
+    .a-batal   { background: rgba(239,68,68,.08);   color: #f87171;  border-color: rgba(239,68,68,.2); }
+    .a-wa      { background: rgba(37,211,102,.12);  color: #25d366;  border-color: rgba(37,211,102,.25); text-decoration: none; }
+    .a-del     { background: transparent; color: #4a3d62; border-color: rgba(255,255,255,.06); margin-left: auto; }
+    .a-del:hover { background: rgba(239,68,68,.08); color: #f87171; border-color: rgba(239,68,68,.2); filter: none; }
+
+    /* Toast */
+    #toast {
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: rgba(20,14,38,.97); border: 1px solid rgba(192,132,252,.3);
+      border-radius: 50px; padding: 10px 22px;
+      font-size: 13px; font-weight: 600; color: #f0e6ff;
+      box-shadow: 0 8px 28px rgba(0,0,0,.4);
+      opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none; z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo"> ARFELYA</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-sub">Dashboard Penjual</div>
+  <div class="topbar-right">
+    <div class="notif-bell" id="notif-bell" title="Pesanan baru">🔔<span class="notif-dot" id="notif-dot"></span></div>
+    <button class="btn-dummy" onclick="tambahDummy()" title="Simulasi pesanan masuk">+ Pesanan Demo</button>
+    <a href="index.html" class="btn-toko">← Kembali ke Toko</a>
+    <button class="btn-toko" id="btn-admin-logout" style="cursor:pointer;border-color:rgba(239,68,68,.3);color:#f87171;">🚪 Keluar</button>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-card" style="--g:linear-gradient(135deg,#7c3aed,#c084fc);--gi:rgba(124,58,237,.12)">
+    <div class="stat-top"><div class="stat-icon-wrap">📦</div><span class="stat-trend" id="st-new"></span></div>
+    <div class="stat-val" id="sv-total">0</div>
+    <div class="stat-lbl">Total Pesanan</div>
+  </div>
+  <div class="stat-card" style="--g:linear-gradient(135deg,#f59e0b,#fbbf24);--gi:rgba(245,158,11,.12)">
+    <div class="stat-top"><div class="stat-icon-wrap">⏳</div></div>
+    <div class="stat-val" id="sv-tunggu">0</div>
+    <div class="stat-lbl">Menunggu Konfirmasi</div>
+  </div>
+  <div class="stat-card" style="--g:linear-gradient(135deg,#0ea5e9,#60a5fa);--gi:rgba(14,165,233,.12)">
+    <div class="stat-top"><div class="stat-icon-wrap">🔄</div></div>
+    <div class="stat-val" id="sv-proses">0</div>
+    <div class="stat-lbl">Diproses</div>
+  </div>
+  <div class="stat-card" style="--g:linear-gradient(135deg,#059669,#34d399);--gi:rgba(5,150,105,.12)">
+    <div class="stat-top"><div class="stat-icon-wrap">✅</div></div>
+    <div class="stat-val" id="sv-selesai">0</div>
+    <div class="stat-lbl">Selesai</div>
+  </div>
+  <div class="stat-card" style="--g:linear-gradient(135deg,#c084fc,#f472b6);--gi:rgba(219,39,119,.12)">
+    <div class="stat-top"><div class="stat-icon-wrap">💰</div></div>
+    <div class="stat-val" id="sv-omzet">Rp 0</div>
+    <div class="stat-lbl">Total Omzet</div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="section-heading">Daftar Pesanan</div>
+  <div class="search-wrap">
+    <input type="text" id="q-search" placeholder="Cari nama, item, ID pesanan…">
+  </div>
+  <div class="filter-row" id="filter-row">
+    <button class="f-btn active" data-s="semua">Semua <span class="f-count" id="fc-semua">0</span></button>
+    <button class="f-btn" data-s="Menunggu Konfirmasi">Menunggu <span class="f-count" id="fc-tunggu">0</span></button>
+    <button class="f-btn" data-s="Diproses">Diproses <span class="f-count" id="fc-proses">0</span></button>
+    <button class="f-btn" data-s="Dikirim">Dikirim <span class="f-count" id="fc-kirim">0</span></button>
+    <button class="f-btn" data-s="Selesai">Selesai <span class="f-count" id="fc-selesai">0</span></button>
+    <button class="f-btn" data-s="Dibatalkan">Batal <span class="f-count" id="fc-batal">0</span></button>
+  </div>
+  <button class="btn-del-all" onclick="hapusSemua()">🗑 Hapus Semua</button>
+</div>
+
+<!-- ORDER LIST -->
+<div class="orders-area">
+  <div class="empty-box" id="empty-box" style="display:none">
+    <div class="e-icon">📭</div>
+    <p>Belum ada pesanan yang cocok.<br>Pesanan masuk dari pelanggan akan tampil otomatis di sini.</p>
+  </div>
+  <div id="order-list"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ================================================================
+   DATA HELPERS
+================================================================ */
+function getOrders() { return JSON.parse(localStorage.getItem('arfelya-orders') || '[]'); }
+function setOrders(d) { localStorage.setItem('arfelya-orders', JSON.stringify(d)); }
+
+function fmtRp(n) { return 'Rp ' + Number(n).toLocaleString('id-ID'); }
+function fmtTime(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleString('id-ID', {
+    day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
+  });
+}
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* Status map */
+var STATUS_CLASS = {
+  'Menunggu Konfirmasi':'s-tunggu',
+  'Diproses':'s-proses',
+  'Dikirim':'s-kirim',
+  'Selesai':'s-selesai',
+  'Dibatalkan':'s-batal'
+};
+
+/* ================================================================
+   STATE
+================================================================ */
+var activeFilter = 'semua';
+var searchQ = '';
+var prevCount = getOrders().length;
+
+/* ================================================================
+   RENDER
+================================================================ */
+function render() {
+  var all = getOrders();
+
+  /* Stats */
+  var cn = {tunggu:0, proses:0, kirim:0, selesai:0, batal:0};
+  var omzet = 0;
+  all.forEach(function(o) {
+    if (o.status === 'Menunggu Konfirmasi') cn.tunggu++;
+    else if (o.status === 'Diproses')       cn.proses++;
+    else if (o.status === 'Dikirim')        cn.kirim++;
+    else if (o.status === 'Selesai')        cn.selesai++;
+    else if (o.status === 'Dibatalkan')     cn.batal++;
+    omzet += (o.totalAngka || 0);
+  });
+
+  document.getElementById('sv-total').textContent   = all.length;
+  document.getElementById('sv-tunggu').textContent  = cn.tunggu;
+  document.getElementById('sv-proses').textContent  = cn.proses;
+  document.getElementById('sv-selesai').textContent = cn.selesai;
+  document.getElementById('sv-omzet').textContent   = fmtRp(omzet);
+
+  /* Filter counts */
+  document.getElementById('fc-semua').textContent  = all.length;
+  document.getElementById('fc-tunggu').textContent = cn.tunggu;
+  document.getElementById('fc-proses').textContent = cn.proses;
+  document.getElementById('fc-kirim').textContent  = cn.kirim;
+  document.getElementById('fc-selesai').textContent= cn.selesai;
+  document.getElementById('fc-batal').textContent  = cn.batal;
+
+  /* Notif dot */
+  if (cn.tunggu > 0) {
+    document.getElementById('notif-dot').classList.add('show');
+    document.getElementById('st-new').textContent = cn.tunggu + ' baru';
+  } else {
+    document.getElementById('notif-dot').classList.remove('show');
+    document.getElementById('st-new').textContent = '';
+  }
+
+  /* Filter + search */
+  var filtered = all.filter(function(o) {
+    var sm = activeFilter === 'semua' || o.status === activeFilter;
+    var q = searchQ.toLowerCase();
+    var qm = !q || [o.nama, o.item, o.id, o.whatsapp].some(function(v) {
+      return v && String(v).toLowerCase().includes(q);
+    });
+    return sm && qm;
+  });
+
+  var listEl = document.getElementById('order-list');
+  var emptyEl = document.getElementById('empty-box');
+
+  if (filtered.length === 0) {
+    emptyEl.style.display = 'block';
+    listEl.innerHTML = '';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  listEl.innerHTML = filtered.map(buildCard).join('');
+}
+
+/* ================================================================
+   BUILD CARD HTML
+================================================================ */
+function buildCard(o) {
+  var sc = STATUS_CLASS[o.status] || 's-tunggu';
+  var isNew = o._new;
+  var wa = o.whatsapp
+    ? 'https://wa.me/' + String(o.whatsapp).replace(/[^0-9]/g,'').replace(/^0/,'62') +
+      '?text=' + encodeURIComponent('Halo ' + o.nama + ', pesanan ' + o.id + ' sedang kami proses. Terima kasih sudah berbelanja di ARFELYA ')
+    : '#';
+
+  var actionBtns = '';
+  if (o.status === 'Menunggu Konfirmasi')
+    actionBtns += '<button class="a-btn a-proses" onclick="ubah(\'' + o.id + '\',\'Diproses\')">🔄 Konfirmasi & Proses</button>';
+  if (o.status === 'Diproses')
+    actionBtns += '<button class="a-btn a-kirim"   onclick="ubah(\'' + o.id + '\',\'Dikirim\')">🚚 Tandai Dikirim</button>';
+  if (o.status === 'Dikirim')
+    actionBtns += '<button class="a-btn a-selesai" onclick="ubah(\'' + o.id + '\',\'Selesai\')">✅ Pesanan Selesai</button>';
+  if (o.status !== 'Selesai' && o.status !== 'Dibatalkan')
+    actionBtns += '<button class="a-btn a-batal"   onclick="ubah(\'' + o.id + '\',\'Dibatalkan\')">✕ Batalkan</button>';
+  actionBtns += '<a class="a-btn a-wa" href="' + wa + '" target="_blank" rel="noopener">💬 Chat WA</a>';
+  actionBtns += '<button class="a-btn a-del"      onclick="hapus(\'' + o.id + '\')">🗑 Hapus</button>';
+
+  return '<div class="o-card' + (isNew ? ' new-order' : '') + '" id="oc-' + o.id + '">' +
+    '<div class="o-head" onclick="toggle(\'' + o.id + '\')">' +
+      '<span class="o-num">' + esc(o.id) + '</span>' +
+      (isNew ? '<span class="o-new-tag">✦ Baru</span>' : '') +
+      '<div class="o-info">' +
+        '<div class="o-name">' + esc(o.nama) + '</div>' +
+        '<div class="o-item">' + esc(o.item) + '</div>' +
+      '</div>' +
+      '<div class="o-right">' +
+        '<span class="sbadge ' + sc + '">' + esc(o.status) + '</span>' +
+        '<span class="o-price">' + esc(o.total || '—') + '</span>' +
+        '<span class="o-time">' + fmtTime(o.waktu) + '</span>' +
+      '</div>' +
+      '<span class="o-arrow">▼</span>' +
+    '</div>' +
+    '<div class="o-body">' +
+      '<div class="o-divider"></div>' +
+      '<div class="d-grid">' +
+        cell('👤 Nama Pemesan',   o.nama)     +
+        cell('📱 No. WhatsApp',   o.whatsapp) +
+        cell('🃏 Photocard',      o.item)     +
+        cell('📦 Jenis Paket',    o.paket)    +
+        cell('💳 Metode Bayar',   o.metode)   +
+        cell('🏦 No. Rekening',   o.nomor)    +
+        cell('📍 Alamat Kirim',   o.alamat)   +
+        cell('🕐 Waktu Pesan',    fmtTime(o.waktu)) +
+      '</div>' +
+      '<div class="total-row">' +
+        '<span class="total-row-lbl">Total Transfer</span>' +
+        '<span class="total-row-val">' + esc(o.total || '—') + '</span>' +
+      '</div>' +
+      '<div class="o-actions">' + actionBtns + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function cell(lbl, val) {
+  return '<div class="d-cell">' +
+    '<div class="d-lbl">' + lbl + '</div>' +
+    '<div class="d-val">' + esc(val || '—') + '</div>' +
+  '</div>';
+}
+
+/* ================================================================
+   ACTIONS
+================================================================ */
+function toggle(id) {
+  var card = document.getElementById('oc-' + id);
+  if (!card) return;
+  card.classList.toggle('open');
+  // clear new flag on open
+  var orders = getOrders().map(function(o) {
+    if (o.id === id) o._new = false;
+    return o;
+  });
+  setOrders(orders);
+}
+
+function ubah(id, status) {
+  var orders = getOrders().map(function(o) {
+    if (o.id === id) { o.status = status; o._new = false; }
+    return o;
+  });
+  setOrders(orders);
+  toast('Status diperbarui: ' + status);
+  render();
+}
+
+function hapus(id) {
+  if (!confirm('Hapus pesanan ' + id + '?')) return;
+  setOrders(getOrders().filter(function(o) { return o.id !== id; }));
+  toast('Pesanan dihapus.');
+  render();
+}
+
+function hapusSemua() {
+  if (!confirm('Hapus SEMUA pesanan? Tidak bisa dibatalkan.')) return;
+  localStorage.removeItem('arfelya-orders');
+  toast('Semua pesanan dihapus.');
+  render();
+}
+
+/* ================================================================
+   DEMO DATA (tombol "+ Pesanan Demo")
+================================================================ */
+var demoItems = [
+  {nama:'Aulia Rahmadani', wa:'081234567890', item:'BTS - Jungkook PC (Proof Era, original Big Hit)', paket:'Satuan (Katalog)', metode:'DANA', nomor:'0895-1252-3841', alamat:'Jl. Mawar No. 12, Bandung', total:'Rp 196.000', totalAngka:196000},
+  {nama:'Siti Nuraini',    wa:'082198765432', item:'SEVENTEEN - Wonwoo PC (Spill The Feels era)',      paket:'Satuan (Katalog)', metode:'ShopeePay', nomor:'0812-9822-2164', alamat:'Jl. Merdeka No. 5, Jakarta', total:'Rp 221.000', totalAngka:221000},
+  {nama:'Putri Maharani',  wa:'089876543210', item:'ENHYPEN - Sunghoon PC (Romance Untold era)',       paket:'Bundle Set Era / Member', metode:'Transfer Mandiri', nomor:'166-000-484-4973', alamat:'Jl. Melati No. 8, Surabaya', total:'Rp 1.107.000', totalAngka:1107000},
+  {nama:'Rizka Amalia',    wa:'085612345678', item:'Stray Kids - Felix PC (MAXIDENT era)',             paket:'Satuan (Katalog)', metode:'DANA', nomor:'0895-1252-3841', alamat:'Jl. Kenanga No. 3, Yogyakarta', total:'Rp 178.000', totalAngka:178000},
+  {nama:'Dewi Puspita',    wa:'081387654321', item:'TWS - Hanjin PC (sparkling blue, Sparkling Version)', paket:'Mystery Box', metode:'ShopeePay', nomor:'0812-9822-2164', alamat:'Jl. Dahlia No. 20, Medan', total:'Rp 290.000', totalAngka:290000},
+];
+var demoIdx = 0;
+
+function tambahDummy() {
+  var d = demoItems[demoIdx % demoItems.length];
+  demoIdx++;
+  var orders = getOrders();
+  orders.unshift({
+    id: 'ARF-' + Date.now(),
+    waktu: new Date().toISOString(),
+    nama: d.nama, whatsapp: d.wa, alamat: d.alamat,
+    item: d.item, paket: d.paket, metode: d.metode,
+    nomor: d.nomor, total: d.total, totalAngka: d.totalAngka,
+    status: 'Menunggu Konfirmasi', _new: true
+  });
+  setOrders(orders);
+  toast('📦 Pesanan baru masuk dari ' + d.nama + '!');
+  render();
+}
+
+/* ================================================================
+   FILTER & SEARCH
+================================================================ */
+document.getElementById('filter-row').addEventListener('click', function(e) {
+  var btn = e.target.closest('.f-btn');
+  if (!btn) return;
+  document.querySelectorAll('.f-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeFilter = btn.dataset.s;
+  render();
+});
+
+document.getElementById('q-search').addEventListener('input', function(e) {
+  searchQ = e.target.value;
+  render();
+});
+
+/* ================================================================
+   TOAST
+================================================================ */
+var toastTimer;
+function toast(msg) {
+  var el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function() { el.classList.remove('show'); }, 3000);
+}
+
+/* ================================================================
+   AUTO-REFRESH (detect orders from other tabs)
+================================================================ */
+window.addEventListener('storage', function(e) {
+  if (e.key === 'arfelya-orders') {
+    var newCount = getOrders().length;
+    if (newCount > prevCount) {
+      toast('📦 ' + (newCount - prevCount) + ' pesanan baru masuk!');
+    }
+    prevCount = newCount;
+    render();
+  }
+});
+
+/* Init */
+render();
+
+/* ================================================================
+   LOGOUT ADMIN
+================================================================ */
+document.getElementById('btn-admin-logout').addEventListener('click', function () {
+  if (!confirm('Keluar dari dashboard admin?')) return;
+  window.ArfelyaAuth.logout();
+  window.location.href = 'index.html';
+});
+
+</script>
+</body>
+</html>

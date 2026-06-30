@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beranda - ARFELYA | Toko Photocard K-Pop</title>
+  <meta name="description" content="Selamat datang di ARFELYA. Tempat terbaik berburu photocard K-Pop favoritmu yang original, aman, dan terpercaya.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <script src="theme.js"></script>
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <style>
+    /* ===== BASE STYLES & GRADIENT BACKGROUND ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background-color: #0f0a1e; color: #e8e0f5; line-height: 1.6; padding-bottom: 60px; }
+    body::before {
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 20% 50%, rgba(155, 89, 217, 0.07) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, rgba(230, 100, 180, 0.06) 0%, transparent 50%);
+      z-index: -1; pointer-events: none;
+    }
+ 
+    /* ===== NAVIGATION ===== */
+    nav {
+      background: rgba(15, 10, 30, 0.85); backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 999;
+      border-bottom: 1px solid rgba(155, 89, 217, 0.25);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0 5%; gap: 12px; }
+    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 16px 0; letter-spacing: 1px; }
+    nav ul { list-style-type: none; display: flex; }
+    nav ul li a { display: block; color: #c4b5e8; text-decoration: none; padding: 20px 22px; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; position: relative; }
+    nav ul li a::after { content: ''; position: absolute; bottom: 0px; left: 22px; right: 22px; height: 3px; background: linear-gradient(90deg, #c084fc, #f472b6); transform: scaleX(0); transition: transform 0.3s; border-radius: 2px; }
+    nav ul li a:hover, nav ul li a.active { color: #f0e6ff; }
+    nav ul li a:hover::after, nav ul li a.active::after { transform: scaleX(1); }
+ 
+    /* ===== HERO SECTION ===== */
+    .hero {
+      position: relative; text-align: center; overflow: hidden; height: 90vh;
+      display: flex; align-items: center; justify-content: center;
+      border-bottom: 1px solid rgba(147, 51, 234, 0.15);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://i.pinimg.com/1200x/26/0e/42/260e42a64e5bbd214ababd2a1da657de.jpg');
+      background-size: cover; background-position: center;
+      transform: scale(1.04); transition: transform 8s ease;
+    }
+    .hero:hover .hero-bg { transform: scale(1); }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(15,10,30,0.55) 0%, rgba(15,10,30,0.30) 40%, rgba(15,10,30,0.75) 100%),
+        radial-gradient(ellipse at 50% 60%, rgba(124,58,237,0.28) 0%, transparent 70%);
+    }
+    .hero-text { position: relative; z-index: 2; width: 85%; max-width: 820px; animation: fadeIn 1.2s ease-out; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(192,132,252,0.12); border: 1px solid rgba(192,132,252,0.3);
+      backdrop-filter: blur(8px);
+      padding: 6px 20px; border-radius: 50px; font-size: 12px; color: #c084fc;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 22px;
+    }
+    .hero-text h1 {
+      font-family: 'DM Serif Display', serif; font-size: clamp(56px, 9vw, 88px);
+      background: linear-gradient(135deg, #ffffff 0%, #e9d5ff 40%, #f472b6 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 18px; letter-spacing: 4px;
+      text-shadow: none; filter: drop-shadow(0 4px 24px rgba(192,132,252,0.35));
+    }
+    .hero-text p {
+      color: rgba(232,224,245,0.80); font-size: clamp(16px, 2.2vw, 19px);
+      margin-bottom: 42px; font-weight: 400; line-height: 1.6;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+    }
+    .hero-text .btn-hero {
+      display: inline-block; padding: 16px 52px;
+      background: linear-gradient(90deg, #8b5cf6, #db2777); color: #fff;
+      text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: 1.2px;
+      text-transform: uppercase; border-radius: 50px;
+      box-shadow: 0 0 30px rgba(139,92,246,0.55), 0 0 0 1px rgba(255,255,255,0.08);
+      transition: all 0.3s ease; backdrop-filter: blur(4px);
+    }
+    .hero-text .btn-hero:hover { transform: translateY(-3px); box-shadow: 0 0 50px rgba(219,39,119,0.75), 0 0 0 1px rgba(255,255,255,0.12); }
+    .hero-scroll-hint {
+      position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(192,132,252,0.5); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 1px; animation: bounce 2.2s infinite;
+    }
+    .hero-scroll-hint svg { width: 18px; height: 18px; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+ 
+    /* ===== SECTION GENERAL STYLES ===== */
+    section { padding: 80px 8%; }
+    h2.section-title { font-family: 'DM Serif Display', serif; font-size: 42px; color: #f0e6ff; text-align: center; margin-bottom: 8px; }
+    .divider { width: 60px; height: 3px; background: linear-gradient(to right, #9333ea, #ec4899); margin: 0 auto 50px; border-radius: 2px; }
+ 
+    /* ===== ABOUT SECTION — REDESIGNED ===== */
+    .about-wrap { max-width: 1060px; margin: 0 auto; }
+ 
+    /* Hero image strip */
+    .about-hero-img {
+      position: relative; border-radius: 24px; overflow: hidden;
+      height: 340px; margin-bottom: 48px;
+      border: 1px solid rgba(192, 132, 252, 0.18);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+    }
+    .about-hero-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+    .about-hero-img:hover img { transform: scale(1.03); }
+    .about-hero-img::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(15,10,30,0.85) 100%);
+    }
+    .about-hero-caption {
+      position: absolute; bottom: 24px; left: 28px; z-index: 1;
+      font-family: 'DM Serif Display', serif; font-style: italic;
+      font-size: 22px; color: #f0e6ff; opacity: 0.9;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+ 
+    /* Stats row */
+    .about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+    .stat-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(192,132,252,0.12);
+      border-radius: 18px; padding: 24px 18px; text-align: center;
+      position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s;
+    }
+    .stat-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #f472b6); opacity: 0; transition: opacity 0.3s;
+    }
+    .stat-card:hover { border-color: rgba(192,132,252,0.35); transform: translateY(-4px); }
+    .stat-card:hover::before { opacity: 1; }
+    .stat-num {
+      font-family: 'DM Serif Display', serif; font-size: 36px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1; margin-bottom: 6px;
+    }
+    .stat-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #c4b5e8; }
+ 
+    /* Two-col body */
+    .about-body { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+    .about-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(192,132,252,0.08); border: 1px solid rgba(192,132,252,0.22);
+      padding: 5px 16px; border-radius: 50px; font-size: 11px; color: #c084fc;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+    }
+    .about-desc-col h3 { font-family: 'DM Serif Display', serif; font-size: 28px; color: #f0e6ff; line-height: 1.3; margin-bottom: 16px; }
+    .about-desc-col p { font-size: 15px; line-height: 1.75; color: #d4c8ee; margin-bottom: 14px; }
+    .about-cta {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 8px;
+      padding: 11px 26px; background: linear-gradient(135deg, #7c3aed, #db2777);
+      color: #fff; font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.8px; border-radius: 50px; text-decoration: none;
+      box-shadow: 0 6px 22px rgba(124,58,237,0.35); transition: all 0.25s;
+    }
+    .about-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(219,39,119,0.45); }
+ 
+    /* Feature cards right col */
+    .about-features-col { display: flex; flex-direction: column; gap: 12px; }
+    .feature-card {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: rgba(255,255,255,0.025); border: 1px solid rgba(192,132,252,0.1);
+      border-radius: 14px; padding: 16px 18px;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
+    }
+    .feature-card:hover { background: rgba(192,132,252,0.07); border-color: rgba(192,132,252,0.28); transform: translateX(4px); }
+    .feature-icon {
+      width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px;
+      background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .feature-text h4 { font-size: 14px; font-weight: 700; color: #f0e6ff; margin-bottom: 3px; }
+    .feature-text p { font-size: 13px; color: #c4b5e8; line-height: 1.5; }
+ 
+    @media (max-width: 720px) {
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+      .about-body { grid-template-columns: 1fr; }
+      .about-hero-img { height: 220px; }
+    }
+ 
+    /* ===== PROMO SECTION ===== */
+    .promo-section { text-align: center; padding: 60px 8%; max-width: 1100px; margin: 0 auto; }
+    .promo-section h2 { font-family: 'DM Serif Display', serif; color: #f0e6ff; font-size: 42px; margin-bottom: 10px; }
+    .promo-section p.promo-subtitle { color: #c4b5e8; margin-bottom: 40px; font-size: 15px; font-weight: 500; }
+    
+    .promo-grid { 
+      display: flex; 
+      gap: 25px; 
+      justify-content: center; 
+      flex-wrap: wrap; 
+      max-width: 760px; 
+      margin: 0 auto;
+    }
+    
+    .promo-item { 
+      background: rgba(255, 255, 255, 0.03); 
+      border-radius: 20px; 
+      overflow: hidden; 
+      border: 1px solid rgba(147, 51, 234, 0.15); 
+      transition: all 0.3s ease; 
+      width: calc(50% - 13px);
+      min-width: 260px; 
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      text-decoration: none;
+    }
+    
+    .promo-item.full-width {
+      width: calc(50% - 13px);
+    }
+    
+    .promo-item:hover { transform: translateY(-5px); border-color: rgba(192, 132, 252, 0.4); box-shadow: 0 12px 30px rgba(147, 51, 234, 0.25); }
+    
+    .promo-img-wrapper {
+      width: 100%;
+      height: 330px; 
+      overflow: hidden;
+    }
+    .promo-item img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      display: block; 
+      transition: transform 0.3s; 
+    }
+    .promo-item:hover img { transform: scale(1.03); }
+    
+    .promo-details {
+      padding: 20px;
+      background: rgba(15, 10, 30, 0.6);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    
+    .promo-details h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #c4b5e8;
+      margin-bottom: 12px;
+      line-height: 1.4;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* ===== PRICE & BUTTON ALIGNMENT (Sesuai image_7db5e4.png) ===== */
+    .price-action-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 15px;
+    }
+ 
+    .price-box {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .price-now {
+      font-size: 21px;
+      font-weight: 800;
+      color: #f472b6;
+      line-height: 1.1;
+    }
+    
+    .price-was {
+      font-size: 12px;
+      color: #9d8fc2;
+      text-decoration: line-through;
+      margin-top: 2px;
+    }
+ 
+    .btn-pesan {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #ffffff;
+      padding: 8px 22px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 12px;
+      text-transform: capitalize;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+      transition: all 0.2s ease;
+    }
+    .promo-item:hover .btn-pesan {
+      box-shadow: 0 4px 20px rgba(236, 72, 153, 0.5);
+      transform: scale(1.03);
+    }
+ 
+    /* ===== FOOTER ===== */
+    footer { background: #070410; color: #9d8fc2; padding: 40px 8% 20px; text-align: center; font-size: 13px; border-top: 1px solid rgba(147, 51, 234, 0.1); margin-top: 80px; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ===== LIGHT THEME — About & Stats (index.html spesifik) ===== */
+    body.theme-light .about-wrap {
+      background: rgba(255,255,255,0.70);
+      border: 1px solid rgba(147,51,234,0.15);
+      border-radius: 28px; padding: 36px;
+      backdrop-filter: blur(12px);
+    }
+    body.theme-light .stat-card {
+      background: rgba(255,255,255,0.88) !important;
+      border: 1px solid rgba(147,51,234,0.22) !important;
+      box-shadow: 0 2px 16px rgba(124,58,237,0.08);
+    }
+    body.theme-light .stat-label { color: #4a2d7a !important; }
+    body.theme-light .about-eyebrow {
+      background: rgba(124,58,237,0.1) !important;
+      border-color: rgba(124,58,237,0.3) !important;
+      color: #7c3aed !important;
+    }
+    body.theme-light .about-desc-col h3 { color: #1a0e33 !important; }
+    body.theme-light .about-desc-col p  { color: #3d2060 !important; }
+    body.theme-light .feature-card {
+      background: rgba(255,255,255,0.80) !important;
+      border-color: rgba(147,51,234,0.2) !important;
+      box-shadow: 0 2px 12px rgba(124,58,237,0.07);
+    }
+    body.theme-light .feature-card:hover {
+      background: rgba(240,232,255,0.95) !important;
+      border-color: rgba(147,51,234,0.4) !important;
+    }
+    body.theme-light .feature-icon {
+      background: rgba(124,58,237,0.12) !important;
+      border-color: rgba(124,58,237,0.28) !important;
+    }
+    body.theme-light .feature-text h4 { color: #1a0e33 !important; }
+    body.theme-light .feature-text p   { color: #4a2d7a !important; }
+    body.theme-light .price-was        { color: #9270c4 !important; }
+    body.theme-light h2.section-title  { color: #2d1f4e !important; }
+
+  </style>
+</head>
+<body>
+ 
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">ARFELYA</div>
+    <ul>
+      <li><a href="index.html" class="active">Beranda</a></li>
+      <li><a href="menu.html">Koleksi</a></li>
+      <li><a href="reservasi.html">Pemesanan</a></li>
+      <li><a href="kontak.html">Kontak & Info</a></li>
+    </ul>
+  </div>
+</nav>
+ 
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <div class="hero-badge"> Photocard K-Pop Original</div>
+    <h1>ARFELYA</h1>
+    <p>Tempat paling pas buat nemu photocard K-Pop incaranmu 100% original</p>
+    <a href="menu.html" class="btn-hero">Yuk, Cek Koleksi Kami</a>
+  </div>
+  <div class="hero-scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll
+  </div>
+</div>
+ 
+<section id="tentang">
+  <h2 class="section-title">Tentang Kami</h2>
+  <div class="divider"></div>
+  <div class="about-wrap">
+ 
+    <!-- Stats Row -->
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Official &amp; Original</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Koleksi Tersedia</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1K+</div>
+        <div class="stat-label">Pesanan Selesai</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">⭐ 5.0</div>
+        <div class="stat-label">Rating Kepuasan</div>
+      </div>
+    </div>
+ 
+    <!-- Two-col body -->
+    <div class="about-body">
+ 
+      <!-- Left: Description -->
+      <div class="about-desc-col">
+        <span class="about-eyebrow"> Sejak 2026</span>
+        <h3>Rumahnya Para Penggemar Photocard K-Pop</h3>
+        <p>
+          ARFELYA hadir untuk memenuhi keinginan para penggemar K-Pop di seluruh Indonesia.
+          Kami berkomitmen hanya menyediakan produk 100% official/original dari album maupun
+          merchandise resmi, dengan standar pengecekan kondisi kartu yang sangat ketat.
+        </p>
+        <p>
+          Setiap kartu yang kami jual telah melewati seleksi visual dan kondisi secara menyeluruh —
+          dari sudut, permukaan, hingga kecerahan cetak — sehingga kamu bisa berbelanja dengan tenang.
+        </p>
+      </div>
+ 
+      <!-- Right: Feature cards -->
+      <div class="about-features-col">
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <div class="feature-text">
+            <h4>Garansi Keaslian 100%</h4>
+            <p>Semua produk official dari album resmi. Uang kembali penuh jika terbukti tidak original.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏅</div>
+          <div class="feature-text">
+            <h4>Kondisi Mint / Near Mint</h4>
+            <p>Setiap kartu dinilai secara transparan. Foto real kondisi tersedia sebelum pengiriman.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <div class="feature-text">
+            <h4>Pengemasan Super Aman</h4>
+            <p>Dikemas dengan sleeve + toploader + bubble wrap agar kartu sampai dalam kondisi sempurna.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-text">
+            <h4>Pengiriman Cepat &amp; Beresi</h4>
+            <p>Proses packing 1x24 jam. Nomor resi dikirim otomatis ke WhatsApp kamu.</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔄</div>
+          <div class="feature-text">
+            <h4>Stok Update Tiap Minggu</h4>
+            <p>Koleksi baru hadir setiap minggu mengikuti era comeback idol favoritmu.</p>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<section class="promo-section" id="promo-spesial">
+  <h2>Promo Spesial Bulan Ini</h2>
+  <p class="promo-subtitle">Dapatkan keuntungan lebih melengkapi koleksimu</p>
+  
+  <div class="promo-grid">
+    
+    <!-- Item Promo 1 -->
+    <a href="reservasi.html?item=BTS+Jungkook+-+Arirang+%28Rooted+In+Music+Ver%29&harga=Rp+65.000" class="promo-item">
+      <div class="promo-img-wrapper">
+        <img src="https://i.pinimg.com/736x/b3/ce/ab/b3ceab26fd9e171dd22331f5b0bd0b72.jpg" alt="BTS Jungkook">
+      </div>
+      <div class="promo-details">
+        <h4>BTS JUNGKOOK ARIRANG (ROOTED IN MUSIC VER)</h4>
+        <div class="price-action-container">
+          <div class="price-box">
+            <span class="price-now">Rp 65.000</span>
+            <span class="price-was">Rp 150.000</span>
+          </div>
+          <div class="btn-pesan">Pesan</div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Item Promo 2 -->
+    <a href="reservasi.html?item=Cortis+-+2nd+EP+%27GREENGREEN%27+Reverse+Japan+Pob+Ver&harga=Rp+55.000" class="promo-item">
+      <div class="promo-img-wrapper">
+        <img src="https://i.pinimg.com/736x/57/bf/23/57bf23cccac3934daa5fc4c9651b5dd2.jpg" alt="Cortis">
+      </div>
+      <div class="promo-details">
+        <h4>CORTIS 2ND EP 'GREENGREEN' Reverse Japan Pob Ver</h4>
+        <div class="price-action-container">
+          <div class="price-box">
+            <span class="price-now">Rp 55.000</span>
+            <span class="price-was">Rp 120.000</span>
+          </div>
+          <div class="btn-pesan">Pesan</div>
+        </div>
+      </div>
+    </a>
+ 
+    <!-- Item Promo 3 (Posisi di Tengah Bawah) -->
+    <a href="reservasi.html?item=Seventeen+Wonwoo+-+Face+The+Sun+Carat+Ver&harga=Rp+30.000" class="promo-item full-width">
+      <div class="promo-img-wrapper">
+        <img src="https://i.pinimg.com/736x/56/f9/37/56f937de1b3e5afae872233c944251be.jpg" alt="Seventeen Wonwoo">
+      </div>
+      <div class="promo-details">
+        <h4>SEVENTEEN WONWOO FACE THE SUN CARAT VER.</h4>
+        <div class="price-action-container">
+          <div class="price-box">
+            <span class="price-now">Rp 30.000</span>
+            <span class="price-was">Rp 85.000</span>
+          </div>
+          <div class="btn-pesan">Pesan</div>
+        </div>
+      </div>
+    </a>
+ 
+  </div>
+</section>
+ 
+<footer>
+  © 2026 ARFELYA — Photocard K-Pop Original & Terpercaya 
+</footer>
+ 
+</body>
+</html>

@@ -1,0 +1,444 @@
+/* ===== ARFELYA THEME SYSTEM ===== */
+
+/* ================================================================
+   PAGE TRANSITION
+   ================================================================ */
+
+/* Animasi masuk halaman (fade-in + slide-up) */
+body {
+  animation: arPageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes arPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animasi keluar halaman (fade-out + slide-up) */
+body.ar-page-leaving {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+  transition: opacity 0.32s ease-in, transform 0.32s ease-in !important;
+  pointer-events: none;
+}
+
+/* ================================================================
+   HERO BACKGROUND IMAGE
+   ================================================================ */
+
+/* Dark theme (default) — overlay gelap agar teks tetap terbaca */
+.hero {
+  background-image:
+    linear-gradient(to bottom,
+      rgba(10, 6, 22, 0.60) 0%,
+      rgba(10, 6, 22, 0.40) 40%,
+      rgba(10, 6, 22, 0.65) 100%),
+    url('https://i.pinimg.com/1200x/26/0e/42/260e42a64e5bbd214ababd2a1da657de.jpg') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+/* ================================================================
+   GLOBAL ENHANCEMENTS (berlaku di semua tema)
+   ================================================================ */
+
+/* Scroll reveal animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Back to top button */
+#back-to-top {
+  position: fixed; bottom: 28px; right: 24px; z-index: 998;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #db2777);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: #fff;
+  box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.3s, transform 0.3s;
+  pointer-events: none;
+}
+#back-to-top.visible {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+#back-to-top:hover { filter: brightness(1.12); transform: translateY(-2px); }
+
+/* Mobile hamburger */
+.hamburger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none; cursor: pointer; padding: 8px;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: #c4b5e8; border-radius: 2px;
+  transition: all 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  nav ul {
+    display: none;
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 0;
+    background: rgba(10, 6, 22, 0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(155,89,217,0.2);
+    padding: 8px 0;
+  }
+  nav ul.open { display: flex; }
+  nav ul li a { padding: 14px 24px; }
+  .theme-toggle .toggle-label { display: none; }
+}
+
+/* --- Tombol toggle --- */
+.theme-toggle {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(192,132,252,0.25);
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px 6px 10px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 12px; font-weight: 600;
+  color: #c4b5e8;
+  transition: background 0.25s, border-color 0.25s, color 0.25s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  background: rgba(192,132,252,0.12);
+  border-color: rgba(192,132,252,0.45);
+  color: #f0e6ff;
+}
+.theme-toggle .toggle-icon { font-size: 15px; line-height: 1; }
+.theme-toggle .toggle-label { letter-spacing: 0.3px; }
+
+
+/* ================================================================
+   LIGHT THEME — semua override ditaruh di sini
+   ================================================================ */
+body.light {
+  background-color: #f5f0ff !important;
+  color: #2d1f4e !important;
+}
+
+/* Pseudo-element background glow */
+body.light::before {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(155,89,217,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(230,100,180,0.06) 0%, transparent 50%) !important;
+}
+
+/* Nav */
+body.light nav {
+  background: rgba(245,240,255,0.92) !important;
+  border-bottom-color: rgba(147,51,234,0.18) !important;
+}
+body.light nav ul { background: rgba(238,232,255,0.98) !important; }
+body.light nav ul li a { color: #6b4fa0 !important; }
+body.light nav ul li a:hover,
+body.light nav ul li a.active { color: #3b0764 !important; }
+body.light .nav-logo {
+  background: linear-gradient(135deg, #7c3aed, #db2777) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+body.light .theme-toggle {
+  background: rgba(124,58,237,0.08);
+  border-color: rgba(124,58,237,0.25);
+  color: #6b4fa0;
+}
+body.light .theme-toggle:hover {
+  background: rgba(124,58,237,0.15);
+  color: #3b0764;
+}
+body.light .hamburger span { background: #6b4fa0; }
+
+/* Page headers */
+body.light .page-header {
+  background: linear-gradient(180deg, rgba(147,51,234,0.07) 0%, transparent 100%) !important;
+}
+body.light .page-header p,
+body.light #page-desc { color: #7a5fa8 !important; }
+
+/* Hero */
+/* Subtitle hero — lebih jelas & terbaca di atas foto */
+.hero-text p {
+  color: #ffffff !important;
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px !important;
+  line-height: 1.7 !important;
+  text-shadow:
+    0 1px 8px rgba(0, 0, 0, 0.7),
+    0 2px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Light theme — overlay terang agar warna foto tetap terlihat tapi teks terbaca */
+body.light .hero {
+  background-image:
+    linear-gradient(to bottom,
+      rgba(244, 239, 252, 0.62) 0%,
+      rgba(240, 230, 255, 0.45) 40%,
+      rgba(244, 239, 252, 0.68) 100%),
+    url('https://i.pinimg.com/1200x/26/0e/42/260e42a64e5bbd214ababd2a1da657de.jpg') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+body.light .hero-text p {
+  color: #2d1f4e !important;
+  text-shadow:
+    0 1px 6px rgba(255, 255, 255, 0.8),
+    0 2px 16px rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Section titles & text */
+body.light h2.section-title { color: #2d1f4e !important; }
+body.light .section-sub { color: #7a5fa8 !important; }
+
+/* Cards — promo, product, about */
+body.light .promo-item,
+body.light .product-card {
+  background: rgba(255,255,255,0.75) !important;
+  border-color: rgba(147,51,234,0.15) !important;
+  box-shadow: 0 4px 20px rgba(100,60,180,0.08);
+}
+body.light .promo-item:hover,
+body.light .product-card:hover {
+  border-color: rgba(147,51,234,0.35) !important;
+  box-shadow: 0 12px 32px rgba(100,60,180,0.15) !important;
+}
+body.light .promo-details {
+  background: rgba(245,240,255,0.9) !important;
+}
+body.light .promo-details h4 { color: #3b0764 !important; }
+body.light .product-card-body h4 { color: #2d1f4e !important; }
+body.light .product-card-body p  { color: #7a5fa8 !important; }
+body.light .product-group { color: #7c3aed !important; }
+
+/* About container */
+body.light .about-container {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(192,132,252,0.2) !important;
+}
+body.light .about-text p { color: #5a4080 !important; }
+body.light .about-list li { color: #3b0764 !important; }
+
+/* Form container (reservasi) */
+body.light .form-container {
+  background: rgba(255,255,255,0.82) !important;
+  border-color: rgba(147,51,234,0.18) !important;
+}
+body.light .form-control {
+  background: rgba(245,240,255,0.9) !important;
+  border-color: rgba(147,51,234,0.25) !important;
+  color: #2d1f4e !important;
+}
+body.light .form-control::placeholder { color: #a896c8 !important; }
+body.light .form-control:focus {
+  background: #fff !important;
+  border-color: #9333ea !important;
+}
+body.light .form-group label { color: #6b4fa0 !important; }
+body.light .form-note { color: #9d88c0 !important; }
+body.light .section-label-text h3 { color: #2d1f4e !important; }
+body.light .section-label-text p  { color: #9d88c0 !important; }
+body.light .section-label-icon {
+  background: rgba(147,51,234,0.08) !important;
+  border-color: rgba(147,51,234,0.18) !important;
+}
+body.light .form-divider { color: #b0a0d0 !important; }
+
+/* Radio & checkbox options */
+body.light .radio-option,
+body.light .check-option,
+body.light .payment-card {
+  background: rgba(255,255,255,0.6) !important;
+  border-color: rgba(147,51,234,0.15) !important;
+  color: #5a4080 !important;
+}
+body.light .radio-option:hover,
+body.light .check-option:hover,
+body.light .payment-card:hover {
+  background: rgba(147,51,234,0.06) !important;
+  border-color: rgba(147,51,234,0.3) !important;
+  color: #3b0764 !important;
+}
+body.light .radio-option:has(input:checked),
+body.light .check-option:has(input:checked),
+body.light .payment-card:has(input:checked) {
+  background: rgba(147,51,234,0.1) !important;
+  border-color: #9333ea !important;
+  color: #2d1f4e !important;
+}
+body.light .payment-card-name { color: #2d1f4e !important; }
+body.light .payment-card-sub  { color: #9d88c0 !important; }
+body.light .payment-card-icon {
+  background: rgba(147,51,234,0.07) !important;
+  border-color: rgba(147,51,234,0.12) !important;
+}
+
+/* Order summary */
+body.light .order-summary {
+  background: linear-gradient(135deg, rgba(124,58,237,0.07), rgba(219,39,119,0.05)) !important;
+  border-color: rgba(192,132,252,0.2) !important;
+}
+body.light .order-summary-title { color: #7a5fa8 !important; }
+body.light .order-summary-item .item-label { color: #9d88c0 !important; }
+body.light .order-summary-item .item-value { color: #2d1f4e !important; }
+body.light .order-total-label { color: #5a4080 !important; }
+
+/* Payment detail card */
+body.light .payment-detail-card {
+  background: rgba(245,240,255,0.95) !important;
+  border-color: rgba(192,132,252,0.2) !important;
+}
+body.light .payment-detail-row .det-label { color: #9d88c0 !important; }
+body.light .payment-detail-row .det-value { color: #2d1f4e !important; }
+body.light .payment-detail-header span    { color: #7c3aed !important; }
+body.light .transfer-reminder {
+  background: linear-gradient(135deg, rgba(244,114,182,0.07), rgba(124,58,237,0.07)) !important;
+  border-color: rgba(192,132,252,0.2) !important;
+}
+body.light .transfer-reminder .reminder-text { color: #5a4080 !important; }
+
+/* Progress steps */
+body.light .step-label.inactive { color: #b0a0d0 !important; }
+body.light .step-circle.inactive {
+  background: rgba(147,51,234,0.06) !important;
+  border-color: rgba(147,51,234,0.2) !important;
+  color: #b0a0d0 !important;
+}
+
+/* Stats bar (menu) */
+body.light .stats-bar {
+  background: rgba(147,51,234,0.04) !important;
+  border-bottom-color: rgba(147,51,234,0.1) !important;
+}
+body.light .stats-bar-item { color: #7a5fa8 !important; }
+body.light .stats-bar-divider { background: rgba(147,51,234,0.15) !important; }
+
+/* Filter bar */
+body.light .filter-search input {
+  background: rgba(255,255,255,0.85) !important;
+  border-color: rgba(147,51,234,0.25) !important;
+  color: #2d1f4e !important;
+}
+body.light .filter-tag {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(147,51,234,0.2) !important;
+  color: #7a5fa8 !important;
+}
+body.light .filter-tag:hover,
+body.light .filter-tag.active {
+  background: rgba(147,51,234,0.1) !important;
+  border-color: rgba(147,51,234,0.4) !important;
+  color: #3b0764 !important;
+}
+body.light .results-info { color: #9d88c0 !important; }
+
+/* Table */
+body.light .table-container-box {
+  background: rgba(255,255,255,0.7) !important;
+  border-color: rgba(147,51,234,0.18) !important;
+}
+body.light table.table-operasional th {
+  background-color: rgba(147,51,234,0.1) !important;
+  color: #2d1f4e !important;
+}
+body.light table.table-operasional td { color: #5a4080 !important; }
+body.light table.table-operasional th,
+body.light table.table-operasional td { border-color: rgba(147,51,234,0.15) !important; }
+body.light .table-internal-header { color: #7c3aed !important; }
+
+/* Promo strip */
+body.light .promo-strip {
+  background: linear-gradient(135deg, rgba(147,51,234,0.09), rgba(219,39,119,0.07)) !important;
+  border-color: rgba(192,132,252,0.2) !important;
+}
+body.light .promo-strip-text { color: #3b0764 !important; }
+
+/* Kontak card panels */
+body.light .card-panel {
+  background: rgba(255,255,255,0.75) !important;
+  border-color: rgba(147,51,234,0.15) !important;
+}
+body.light .panel-title { color: #7c3aed !important; }
+body.light .info-list li { color: #5a4080 !important; }
+body.light .info-list strong { color: #2d1f4e !important; }
+body.light .team-list li {
+  background: rgba(147,51,234,0.06) !important;
+  border-color: rgba(147,51,234,0.12) !important;
+  color: #5a4080 !important;
+}
+body.light .team-subtitle { color: #9d88c0 !important; }
+
+/* Popup sukses */
+body.light #popup-sukses { background: rgba(200,185,240,0.85) !important; }
+body.light .sukses-card {
+  background: rgba(255,255,255,0.97) !important;
+  border-color: rgba(147,51,234,0.2) !important;
+}
+body.light .sukses-title  { color: #2d1f4e !important; }
+body.light .sukses-subtitle { color: #9d88c0 !important; }
+body.light .sukses-detail {
+  background: rgba(245,240,255,0.7) !important;
+  border-color: rgba(147,51,234,0.12) !important;
+}
+body.light .sukses-detail-row .sd-label { color: #b0a0d0 !important; }
+body.light .sukses-detail-row .sd-value { color: #2d1f4e !important; }
+body.light .sukses-total-label { color: #7a5fa8 !important; }
+body.light .sukses-icon-wrap {
+  background: rgba(124,58,237,0.1) !important;
+  border-color: rgba(192,132,252,0.3) !important;
+}
+body.light .btn-sukses-koleksi { color: #9d88c0 !important; border-color: rgba(147,51,234,0.2) !important; }
+
+/* Footer */
+body.light footer {
+  background: #ede6ff !important;
+  color: #9d88c0 !important;
+  border-top-color: rgba(147,51,234,0.12) !important;
+}
+body.light .footer-logo {
+  background: linear-gradient(135deg, #7c3aed, #db2777) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Back to top — light mode */
+body.light #back-to-top { box-shadow: 0 4px 18px rgba(124,58,237,0.25); }
+
+/* Kontak page panels */
+body.light .panel-card,
+body.light .contact-card,
+body.light .info-card {
+  background: rgba(255,255,255,0.75) !important;
+  border-color: rgba(147,51,234,0.15) !important;
+  color: #2d1f4e !important;
+}

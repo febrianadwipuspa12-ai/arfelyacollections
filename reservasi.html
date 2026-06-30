@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan - ARFELYA | Toko Photocard K-Pop</title>
+  <meta name="description" content="Pesan photocard K-Pop favoritmu di ARFELYA. Isi form pemesanan dan kami akan segera konfirmasi ordermu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <script src="theme.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    /* ===== GATE LOGIN: wajib login sebagai PEMBELI sebelum memesan ===== */
+    window.addEventListener('DOMContentLoaded', function () {
+      var session = window.ArfelyaAuth ? window.ArfelyaAuth.getSession() : null;
+      if (!session || session.role !== 'pembeli') {
+        window.ArfelyaAuth.openLoginModal({
+          mode: 'pembeli',
+          onSuccess: function () { window.location.reload(); },
+          onClose: function () { window.location.href = 'menu.html'; }
+        });
+      }
+    });
+  </script>
+
+  <style>
+    /* ===== RESET & BASE STYLES ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { 
+      font-family: 'Outfit', sans-serif; 
+      background-color: #0f0a1e; 
+      color: #e8e0f5; 
+      padding-bottom: 60px;
+    }
+    body::before {
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 20% 50%, rgba(155, 89, 217, 0.07) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, rgba(230, 100, 180, 0.06) 0%, transparent 50%);
+      z-index: -1; pointer-events: none;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      background: rgba(15, 10, 30, 0.85); backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 999;
+      border-bottom: 1px solid rgba(155, 89, 217, 0.25);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0 5%; gap: 12px; }
+    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 16px 0; letter-spacing: 1px; }
+    nav ul { list-style-type: none; display: flex; }
+    nav ul li a { display: block; color: #c4b5e8; text-decoration: none; padding: 20px 22px; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; position: relative; }
+    nav ul li a::after { content: ''; position: absolute; bottom: 0px; left: 22px; right: 22px; height: 3px; background: linear-gradient(90deg, #c084fc, #f472b6); transform: scaleX(0); transition: transform 0.3s; border-radius: 2px; }
+    nav ul li a:hover, nav ul li a.active { color: #f0e6ff; }
+    nav ul li a:hover::after, nav ul li a.active::after { transform: scaleX(1); }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      text-align: center; 
+      padding: 70px 8% 50px;
+      position: relative; 
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(147,51,234,0.1) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+    }
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.3);
+      padding: 6px 18px; border-radius: 50px; font-size: 12px; color: #c084fc;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 18px;
+    }
+    .page-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(30px, 5vw, 48px); background: linear-gradient(135deg, #f0e6ff 0%, #c084fc 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+    .page-header p { color: #8b7aaa; font-size: 15px; max-width: 650px; margin: 0 auto; line-height: 1.65; }
+
+    /* ===== PROGRESS STEPS ===== */
+    .progress-wrap { display: flex; align-items: center; justify-content: center; margin: 30px auto 0; max-width: 320px; }
+    .step-item { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+    .step-circle {
+      width: 40px; height: 40px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; transition: all 0.4s ease;
+    }
+    .step-circle.active { background: linear-gradient(135deg, #7c3aed, #db2777); color: #fff; box-shadow: 0 0 20px rgba(192, 132, 252, 0.5); }
+    .step-circle.done { background: linear-gradient(135deg, #7c3aed, #db2777); color: #fff; }
+    .step-circle.inactive { background: rgba(255,255,255,0.04); border: 1px solid rgba(192, 132, 252, 0.2); color: #5c4e78; }
+    .step-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .step-label.active { color: #c084fc; }
+    .step-label.inactive { color: #5c4e78; }
+    .step-connector { flex: 0 0 60px; height: 2px; background: rgba(192, 132, 252, 0.12); margin-bottom: 22px; border-radius: 2px; transition: background 0.4s ease; }
+    .step-connector.done { background: linear-gradient(90deg, #7c3aed, #db2777); }
+
+    /* ===== FORM SECTION & CONTAINERS ===== */
+    .form-section { padding: 40px 5% 80px; position: relative; z-index: 1; }
+    .form-container {
+      max-width: 680px; margin: 0 auto;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 45px; border-radius: 24px;
+      border: 1px solid rgba(192, 132, 252, 0.15);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(192, 132, 252, 0.04);
+      position: relative; overflow: hidden;
+    }
+    .form-container::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, #7c3aed, #c084fc, #f472b6, transparent);
+    }
+    .deco-circle { position: absolute; border-radius: 50%; pointer-events: none; }
+    .deco-1 { width: 220px; height: 220px; background: radial-gradient(circle, rgba(192,132,252,0.06) 0%, transparent 70%); top: -70px; right: -70px; }
+    .deco-2 { width: 160px; height: 160px; background: radial-gradient(circle, rgba(244,114,182,0.05) 0%, transparent 70%); bottom: 30px; left: -50px; }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px; padding-bottom: 18px;
+      border-bottom: 1px solid rgba(192, 132, 252, 0.1);
+    }
+    .section-label-icon {
+      width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+      background: rgba(192, 132, 252, 0.1); border: 1px solid rgba(192, 132, 252, 0.2);
+      display: flex; align-items: center; justify-content: center; font-size: 17px;
+    }
+    .section-label-text h3 { font-size: 15px; font-weight: 700; color: #f0e6ff; }
+    .section-label-text p { font-size: 12px; color: #6b5d88; margin-top: 2px; }
+
+    /* ===== FORM GROUPS ===== */
+    .form-group { margin-bottom: 22px; }
+    .form-group label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #c4b5e8; margin-bottom: 8px; letter-spacing: 0.3px; text-transform: uppercase; }
+    
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-control {
+      width: 100%; padding: 14px 18px; font-family: 'Outfit', sans-serif;
+      font-size: 15px; color: #f0e6ff; background: rgba(15, 10, 30, 0.6);
+      border: 1px solid rgba(147, 51, 234, 0.25); border-radius: 12px;
+      outline: none; transition: all 0.3s ease;
+    }
+    .form-control:focus { border-color: #c084fc; box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.12); background: rgba(15, 10, 30, 0.85); }
+    .form-control::placeholder { color: #4a3d62; }
+    textarea.form-control { resize: vertical; }
+
+    /* ===== DIVIDER ===== */
+    .form-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 28px 0 24px; color: #3d2d5c; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+    }
+    .form-divider::before, .form-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(192,132,252,0.15), transparent);
+    }
+
+    /* ===== RADIO & CHECKBOX GROUPS ===== */
+    .radio-group, .check-group { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    
+    /* GAYA VISUAL OPSI - DIPERBAIKI UNTUK KEJELASAN */
+    .radio-option, .check-option {
+      display: flex; align-items: center; gap: 10px; font-size: 14px; color: #9d8fc2;
+      cursor: pointer; user-select: none;
+      padding: 13px 16px;
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(192,132,252,0.1);
+      border-radius: 10px; transition: all 0.25s ease;
+    }
+    
+    /* Efek hover */
+    .radio-option:hover, .check-option:hover {
+      background: rgba(192, 132, 252, 0.07);
+      border-color: rgba(192, 132, 252, 0.28); color: #c4b5e8;
+    }
+    
+    /* Efek saat dipilih (Checked) - KUNCI KEJELASAN */
+    .radio-option:has(input:checked),
+    .check-option:has(input:checked) {
+      background: rgba(192, 132, 252, 0.15);
+      border-color: #c084fc;
+      color: #f0e6ff;
+    }
+    
+    .radio-option input, .check-option input { accent-color: #c084fc; transform: scale(1.15); cursor: pointer; flex-shrink: 0; }
+
+    .opt-badge {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      padding: 3px 9px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0;
+    }
+    .badge-purple { background: rgba(192,132,252,0.13); color: #c084fc; border: 1px solid rgba(192,132,252,0.22); }
+    .badge-pink   { background: rgba(244,114,182,0.13); color: #f472b6; border: 1px solid rgba(244,114,182,0.22); }
+
+    .form-note { font-size: 12px; color: #5c4e78; font-style: italic; margin-top: 7px; }
+
+    /* ===== INFO BOX METODE PEMBAYARAN ===== */
+    .payment-info-box {
+      margin-top: 18px; padding: 20px 22px;
+      background: rgba(147, 51, 234, 0.08);
+      border-left: 3px solid #f472b6;
+      border-radius: 0 12px 12px 0;
+      transition: all 0.3s ease;
+    }
+    .payment-info-box p { font-size: 14px; color: #e2d4f7; margin-bottom: 7px; display: flex; align-items: center; gap: 8px; }
+    .payment-info-box p:last-child { margin-bottom: 0; }
+    .payment-info-box strong { color: #f472b6; }
+
+    /* ===== ORDER SUMMARY BOX ===== */
+    .order-summary {
+      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(219,39,119,0.1));
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      border-radius: 16px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .order-summary::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, #7c3aed, #c084fc, #f472b6);
+    }
+    .order-summary-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: #9d8fc2; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .order-summary-item {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 0; border-bottom: 1px solid rgba(192,132,252,0.08);
+      gap: 12px;
+    }
+    .order-summary-item:last-of-type { border-bottom: none; }
+    .order-summary-item .item-label { font-size: 13px; color: #8b7aaa; flex-shrink: 0; }
+    .order-summary-item .item-value { font-size: 13px; color: #e2d4f7; font-weight: 600; text-align: right; }
+    .order-summary-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(192,132,252,0.3), transparent);
+      margin: 12px 0;
+    }
+    .order-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 12px;
+    }
+    .order-total-label {
+      font-size: 14px; font-weight: 700; color: #c4b5e8;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .order-total-amount {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ===== METODE PAYMENT CARDS ===== */
+    .payment-methods { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+    .payment-card {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      background: rgba(255,255,255,0.02); border: 1.5px solid rgba(192,132,252,0.12);
+      border-radius: 14px; cursor: pointer; transition: all 0.25s ease;
+      position: relative;
+    }
+    .payment-card:hover { background: rgba(192,132,252,0.07); border-color: rgba(192,132,252,0.3); }
+    .payment-card:has(input:checked) {
+      background: rgba(192,132,252,0.13);
+      border-color: #c084fc;
+      box-shadow: 0 0 0 1px rgba(192,132,252,0.25), 0 4px 20px rgba(124,58,237,0.15);
+    }
+    .payment-card input[type="radio"] { display: none; }
+    .payment-card-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+      transition: all 0.25s;
+    }
+    .payment-card:has(input:checked) .payment-card-icon {
+      background: rgba(192,132,252,0.15); border-color: rgba(192,132,252,0.3);
+    }
+    .payment-card-info { flex: 1; }
+    .payment-card-name { font-size: 14px; font-weight: 700; color: #e2d4f7; }
+    .payment-card-sub { font-size: 12px; color: #6b5d88; margin-top: 2px; }
+    .payment-card-check {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      border: 2px solid rgba(192,132,252,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; transition: all 0.25s;
+    }
+    .payment-card:has(input:checked) .payment-card-check {
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      border-color: transparent; color: #fff; content: '✓';
+    }
+
+    /* ===== REKENING DETAIL ANIMASI ===== */
+    .payment-detail-card {
+      margin-top: 18px;
+      padding: 22px;
+      background: rgba(15, 10, 30, 0.7);
+      border: 1px solid rgba(244,114,182,0.2);
+      border-radius: 14px;
+      animation: slideIn 0.3s ease;
+      display: none;
+    }
+    .payment-detail-card.visible { display: block; }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .payment-detail-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(192,132,252,0.1);
+    }
+    .payment-detail-header span { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c084fc; }
+    .payment-detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; font-size: 14px;
+    }
+    .payment-detail-row .det-label { color: #6b5d88; }
+    .payment-detail-row .det-value { color: #f0e6ff; font-weight: 600; }
+    .copy-btn {
+      background: rgba(192,132,252,0.1); border: 1px solid rgba(192,132,252,0.2);
+      color: #c084fc; font-size: 11px; font-weight: 700; padding: 4px 10px;
+      border-radius: 6px; cursor: pointer; transition: all 0.2s; margin-left: 8px;
+      font-family: 'Outfit', sans-serif; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .copy-btn:hover { background: rgba(192,132,252,0.2); }
+    .copy-btn.copied { background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.3); color: #10b981; }
+
+    /* ===== TRANSFER TOTAL REMINDER ===== */
+    .transfer-reminder {
+      margin-top: 16px; padding: 14px 18px;
+      background: linear-gradient(135deg, rgba(244,114,182,0.1), rgba(124,58,237,0.1));
+      border: 1px solid rgba(244,114,182,0.2); border-radius: 12px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .transfer-reminder .reminder-icon { font-size: 20px; flex-shrink: 0; }
+    .transfer-reminder .reminder-text { font-size: 13px; color: #c4b5e8; line-height: 1.5; }
+    .transfer-reminder .reminder-amount {
+      font-size: 18px; font-weight: 800;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn-submit {
+      width: 100%; padding: 16px; font-family: 'Outfit', sans-serif;
+      font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+      color: #fff; background: linear-gradient(135deg, #7c3aed, #db2777);
+      border: none; border-radius: 50px; cursor: pointer;
+      box-shadow: 0 8px 28px rgba(124, 58, 237, 0.35); transition: all 0.3s ease;
+      margin-top: 20px; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(124, 58, 237, 0.5); filter: brightness(1.06); }
+    
+    .btn-reset {
+      width: 100%; padding: 12px; font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+      color: #6b5d88; background: transparent;
+      border: 1px solid rgba(107, 93, 136, 0.28); border-radius: 50px; cursor: pointer;
+      transition: all 0.3s ease; margin-top: 12px;
+    }
+    .btn-reset:hover { color: #f472b6; border-color: rgba(244, 114, 182, 0.38); background: rgba(244, 114, 182, 0.03); }
+
+    /* ===== HIDDEN CLASS ===== */
+    .hidden { display: none; }
+
+    /* ===== POPUP SUKSES OVERLAY ===== */
+    #popup-sukses {
+      display: none;
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(7, 4, 16, 0.88);
+      backdrop-filter: blur(10px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    #popup-sukses.show { display: flex; animation: fadeOverlay 0.35s ease; }
+    @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
+
+    /* Kartu sukses */
+    .sukses-card {
+      background: rgba(18, 12, 35, 0.98);
+      border: 1px solid rgba(192, 132, 252, 0.22);
+      border-radius: 24px;
+      padding: 44px 38px 36px;
+      max-width: 460px; width: 100%;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.4s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85) translateY(20px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Garis tipis gradien di atas kartu */
+    .sukses-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      border-radius: 24px 24px 0 0;
+      background: linear-gradient(90deg, transparent, #9333ea, #c084fc, #f472b6, transparent);
+    }
+
+    /* Ikon sukses */
+    .sukses-icon-wrap {
+      width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px;
+      background: rgba(124, 58, 237, 0.15);
+      border: 2px solid rgba(192, 132, 252, 0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px;
+    }
+
+    .sukses-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px; color: #f0e6ff;
+      margin-bottom: 6px;
+    }
+    .sukses-subtitle {
+      font-size: 13px; color: #7a6d96; margin-bottom: 26px; line-height: 1.65;
+    }
+
+    /* Detail box di dalam popup */
+    .sukses-detail {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(192,132,252,0.12);
+      border-radius: 14px; padding: 16px 18px;
+      margin-bottom: 24px; text-align: left;
+    }
+    .sukses-detail-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      font-size: 13px; padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 12px;
+    }
+    .sukses-detail-row:last-child { border-bottom: none; }
+    .sukses-detail-row .sd-label { color: #5c4e78; flex-shrink: 0; }
+    .sukses-detail-row .sd-value { color: #d4c8ee; font-weight: 600; text-align: right; }
+
+    .sukses-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px; padding-top: 12px;
+      border-top: 1px solid rgba(192,132,252,0.15);
+    }
+    .sukses-total-label { font-size: 12px; font-weight: 700; color: #9d8fc2; text-transform: uppercase; letter-spacing: 0.5px; }
+    .sukses-total-value {
+      font-family: 'DM Serif Display', serif; font-size: 22px;
+      background: linear-gradient(135deg, #c084fc, #f472b6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Tombol di popup */
+    .sukses-btn-group { display: flex; flex-direction: column; gap: 10px; }
+    .btn-sukses-home {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      color: #fff; font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+      border: none; border-radius: 50px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-sukses-home:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-sukses-koleksi {
+      width: 100%; padding: 11px;
+      background: transparent; color: #7a6d96;
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+      border: 1px solid rgba(192,132,252,0.15); border-radius: 50px; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-sukses-koleksi:hover { color: #c084fc; border-color: rgba(192,132,252,0.35); }
+    .btn-sukses-wa {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      color: #fff; font-family: 'Outfit', sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+      border: none; border-radius: 50px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 6px 20px rgba(37,211,102,0.3);
+    }
+    .btn-sukses-wa:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* ===== LOCKED SECTION ===== */
+    .locked-section {
+      position: relative;
+    }
+    .locked-section .form-control {
+      pointer-events: none;
+      background: rgba(15, 10, 30, 0.3);
+      border-color: rgba(147, 51, 234, 0.1);
+      color: rgba(232, 224, 245, 0.25);
+    }
+    .locked-section .form-control::placeholder {
+      color: rgba(74, 61, 98, 0.4);
+    }
+    .locked-section .radio-option,
+    .locked-section .check-option {
+      pointer-events: none;
+      opacity: 0.3;
+    }
+    .locked-section label {
+      opacity: 0.35;
+    }
+    .locked-section .form-note {
+      opacity: 0.3;
+    }
+    .locked-section .form-divider {
+      opacity: 0.3;
+    }
+    .locked-section .section-label {
+      opacity: 0.4;
+    }
+
+    /* Banner peringatan pilih koleksi */
+    .koleksi-warning-banner {
+      display: none;
+      align-items: flex-start;
+      gap: 14px;
+      background: linear-gradient(135deg, rgba(244,114,182,0.12), rgba(124,58,237,0.1));
+      border: 1px solid rgba(244,114,182,0.35);
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+      animation: slideIn 0.35s ease;
+    }
+    .koleksi-warning-banner.show { display: flex; }
+    .koleksi-warning-banner .warn-icon { font-size: 24px; flex-shrink: 0; margin-top: 1px; }
+    .koleksi-warning-banner .warn-body { flex: 1; }
+    .koleksi-warning-banner .warn-title { font-size: 14px; font-weight: 700; color: #f472b6; margin-bottom: 5px; }
+    .koleksi-warning-banner .warn-desc { font-size: 13px; color: #9d8fc2; line-height: 1.6; }
+    .btn-ke-koleksi {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px; padding: 9px 18px;
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      color: #fff; font-family: 'Outfit', sans-serif;
+      font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+      border: none; border-radius: 50px; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-ke-koleksi:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    /* Lock icon di section label */
+    .lock-badge {
+      margin-left: auto;
+      font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 50px;
+      background: rgba(244,114,182,0.1);
+      border: 1px solid rgba(244,114,182,0.25);
+      color: #f472b6; display: none; align-items: center; gap: 4px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .lock-badge.show { display: inline-flex; }
+
+    /* ===== FOOTER ===== */
+    footer { background: #070410; color: #4a3d62; padding: 35px 8% 20px; text-align: center; font-size: 13px; border-top: 1px solid rgba(147, 51, 234, 0.08); position: relative; z-index: 1; }
+    .footer-logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; margin-bottom: 8px; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">ARFELYA</div>
+    <ul>
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="menu.html">Koleksi</a></li>
+      <li><a href="reservasi.html" class="active">Pemesanan</a></li>
+      <li><a href="kontak.html">Kontak & Info</a></li>
+      <li id="nav-auth-slot"></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1 id="page-title">Formulir Pemesanan</h1>
+  <p id="page-desc">Lengkapi detail di bawah ini untuk mengamankan photocard impianmu. Klaim item favoritmu sebelum kehabisan!</p>
+
+  <div class="progress-wrap">
+    <div class="step-item">
+      <div class="step-circle active" id="step1-circle">1</div>
+      <div class="step-label active" id="step1-label">Data Pesanan</div>
+    </div>
+    <div class="step-connector" id="step-connector"></div>
+    <div class="step-item">
+      <div class="step-circle inactive" id="step2-circle">2</div>
+      <div class="step-label inactive" id="step2-label">Pembayaran</div>
+    </div>
+  </div>
+</div>
+
+<section class="form-section">
+  <div class="form-container">
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+
+    <!-- TAHAP 1: FORM DATA PESANAN -->
+    <form id="form-pesanan" onsubmit="tampilkanPembayaran(event)">
+      
+      <!-- BANNER PERINGATAN: muncul jika belum pilih koleksi -->
+      <div class="koleksi-warning-banner" id="koleksi-warning">
+        <span class="warn-icon">🔒</span>
+        <div class="warn-body">
+          <div class="warn-title">Pilih Koleksi Terlebih Dahulu</div>
+          <div class="warn-desc">
+            Kamu belum memilih photocard dari katalog koleksi kami.<br>
+            Silakan kunjungi halaman <strong>Koleksi</strong> dan klik tombol <em>"Pesan Sekarang"</em> pada item yang kamu inginkan agar form ini terisi otomatis dan formulir terbuka.
+          </div>
+          <a href="menu.html" class="btn-ke-koleksi">🛍️ Lihat Koleksi Sekarang</a>
+        </div>
+      </div>
+
+      <!-- Wrapper SELURUH form yang bisa dikunci -->
+      <div id="pesanan-detail-wrapper">
+
+      <div class="section-label">
+        <div class="section-label-icon">👤</div>
+        <div class="section-label-text">
+          <h3>Informasi Data Pesanan</h3>
+          <p>Data diri untuk konfirmasi pesanan</p>
+        </div>
+        <span class="lock-badge" id="lock-badge">🔒 Terkunci</span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nama">Nama Lengkap *</label>
+          <input type="text" id="nama" class="form-control" placeholder="Nama lengkapmu" required>
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">No. WhatsApp *</label>
+          <input type="tel" id="whatsapp" class="form-control" placeholder="0812345678xx" required>
+        </div>
+      </div>
+      <p class="form-note" style="margin-top: -10px; margin-bottom: 22px;">Nomor WA digunakan untuk mengirimkan info pengiriman dan nomor resi</p>
+
+      <div class="form-group">
+        <label for="alamat">Alamat Pengiriman Lengkap *</label>
+        <textarea id="alamat" class="form-control" rows="3" placeholder="Nama Jalan, RT/RW, Kecamatan, Kabupaten/Kota, Kode Pos" required></textarea>
+      </div>
+
+      <div class="form-divider">Spesifikasi Pesanan</div>
+
+      <div class="section-label">
+        <div class="section-label-text">
+          <h3>Detail Photocard</h3>
+          <p>Pilih item dan paket yang diinginkan</p>
+        </div>
+      </div>
+
+        <div class="form-group">
+          <label for="detail-pesanan">Spesifikasi Photocard *</label>
+          <textarea id="detail-pesanan" class="form-control" rows="3" placeholder="Contoh: Jungkook - BTS Proof era, atau Karina - aespa My World" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="harga-manual">Harga dari katalog</label>
+          <input type="text" id="harga-manual" class="form-control" placeholder="Contoh: Rp 150.000" oninput="syncHargaManual(this.value)">
+        </div>
+
+        <div class="form-group">
+          <label>Jenis Paket </label>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="paket" value="satuan" checked>
+              🃏 Satuan (Sesuai List Katalog)
+              <span class="opt-badge badge-purple">Populer</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="paket" value="bundle">
+              📦 Bundle Set Era / Member
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="paket" value="mystery">
+              🎁 Mystery Box Untung Gede
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Layanan Tambahan Extra Safe</label>
+          <div class="check-group">
+            <label class="check-option">
+              <input type="checkbox" name="tambahan" value="toploader">
+              🛡️ Tambah UltraPro Toploader (+Rp 3.000)
+            </label>
+            <label class="check-option">
+              <input type="checkbox" name="tambahan" value="wrapping">
+              🎀 Gift Wrapping / Kartu Ucapan (+Rp 5.000)
+            </label>
+          </div>
+        </div>
+
+      </div><!-- end #pesanan-detail-wrapper -->
+
+      <button type="submit" class="btn-submit">
+        Menuju ke Pembayaran
+      </button>
+      <button type="reset" class="btn-reset">↺ Reset Form</button>
+    </form>
+
+    <!-- TAHAP 2: FORM METODE PEMBAYARAN -->
+    <form id="form-pembayaran" class="hidden" onsubmit="selesaiPembayaran(event)">
+      
+      <div class="section-label">
+        <div class="section-label-icon">💳</div>
+        <div class="section-label-text">
+          <h3>Ringkasan & Pembayaran</h3>
+          <p>Cek pesananmu lalu pilih metode transfer</p>
+        </div>
+      </div>
+
+      <!-- RINGKASAN PESANAN -->
+      <div class="order-summary">
+        <div class="order-summary-title">🧾 Ringkasan Pesanan</div>
+        <div class="order-summary-item">
+          <span class="item-label">Photocard</span>
+          <span class="item-value" id="summary-item">—</span>
+        </div>
+        <div class="order-summary-item">
+          <span class="item-label">Pemesan</span>
+          <span class="item-value" id="summary-nama">—</span>
+        </div>
+        <div class="order-summary-item">
+          <span class="item-label">Jenis Paket</span>
+          <span class="item-value" id="summary-paket">—</span>
+        </div>
+        <div class="order-summary-item" id="summary-tambahan-row" style="display:none;">
+          <span class="item-label">Layanan Tambahan</span>
+          <span class="item-value" id="summary-tambahan">—</span>
+        </div>
+        <div class="order-summary-divider"></div>
+        <div class="order-summary-item">
+          <span class="item-label">Harga Photocard</span>
+          <span class="item-value" id="summary-harga-item">—</span>
+        </div>
+        <div class="order-summary-item" id="summary-biaya-tambahan-row" style="display:none;">
+          <span class="item-label">Biaya Tambahan</span>
+          <span class="item-value" id="summary-biaya-tambahan" style="color:#f472b6;">—</span>
+        </div>
+        <div class="order-summary-divider"></div>
+        <div class="order-total-row">
+          <span class="order-total-label">Total Transfer</span>
+          <span class="order-total-amount" id="summary-total">—</span>
+        </div>
+      </div>
+
+      <!-- PILIH METODE PEMBAYARAN -->
+      <div class="form-group">
+        <label>Pilih Metode Pembayaran *</label>
+        <div class="payment-methods">
+
+          <label class="payment-card">
+            <input type="radio" name="metode" value="dana" onchange="updateDetailPembayaran()">
+            <div class="payment-card-icon">🪙</div>
+            <div class="payment-card-info">
+              <div class="payment-card-name">DANA</div>
+              <div class="payment-card-sub">E-Wallet </div>
+            </div>
+            <div class="payment-card-check">✓</div>
+          </label>
+
+          <label class="payment-card">
+            <input type="radio" name="metode" value="spay" onchange="updateDetailPembayaran()">
+            <div class="payment-card-icon">🧡</div>
+            <div class="payment-card-info">
+              <div class="payment-card-name">ShopeePay</div>
+              <div class="payment-card-sub">E-Wallet </div>
+            </div>
+            <div class="payment-card-check">✓</div>
+          </label>
+
+          <label class="payment-card">
+            <input type="radio" name="metode" value="tf_bank" onchange="updateDetailPembayaran()">
+            <div class="payment-card-icon">🏦</div>
+            <div class="payment-card-info">
+              <div class="payment-card-name">Transfer Bank Mandiri</div>
+              <div class="payment-card-sub">Transfer antar bank</div>
+            </div>
+            <div class="payment-card-check">✓</div>
+          </label>
+
+        </div>
+
+        <!-- DETAIL REKENING -->
+        <div id="payment-details-box" class="payment-detail-card"></div>
+
+        <!-- REMINDER TOTAL TRANSFER -->
+        <div class="transfer-reminder" id="transfer-reminder" style="display:none;">
+          <span class="reminder-icon">💸</span>
+          <div class="reminder-text">
+            Mohon transfer tepat sebesar<br>
+            <span class="reminder-amount" id="reminder-total">—</span>
+          </div>
+        </div>
+
+        <p class="form-note" style="margin-top: 15px;">Setelah transfer, tekan tombol di bawah untuk memproses pesananmu.</p>
+      </div>
+
+      <button type="button" class="btn-submit" onclick="selesaiPembayaran(event)">
+        ✨ Selesaikan Pembayaran
+      </button>
+      <button type="button" class="btn-reset" onclick="kembaliKePesanan()">← Kembali ke Pesanan</button>
+    </form>
+
+  </div>
+</section>
+
+<!-- ===== POPUP SUKSES ===== -->
+<div id="popup-sukses">
+  <div class="sukses-card">
+    <div class="sukses-icon-wrap">✓</div>
+
+    <h2 class="sukses-title">Pesanan Terkirim</h2>
+    <p class="sukses-subtitle">
+      Pesanan telah terkirim, Silakan transfer sesuai nominal di bawah ini.<br>
+      Kami akan konfirmasi pesananmu setelah pembayaran masuk.
+    </p>
+
+    <div class="sukses-detail">
+      <div class="sukses-detail-row">
+        <span class="sd-label">Photocard</span>
+        <span class="sd-value" id="pop-item">—</span>
+      </div>
+      <div class="sukses-detail-row">
+        <span class="sd-label">Pemesan</span>
+        <span class="sd-value" id="pop-nama">—</span>
+      </div>
+      <div class="sukses-detail-row">
+        <span class="sd-label">Metode</span>
+        <span class="sd-value" id="pop-metode">—</span>
+      </div>
+      <div class="sukses-detail-row">
+        <span class="sd-label">Nomor Tujuan</span>
+        <span class="sd-value" id="pop-nomor">—</span>
+      </div>
+      <div class="sukses-detail-row">
+        <span class="sd-label">Atas Nama</span>
+        <span class="sd-value" id="pop-atasnama">—</span>
+      </div>
+      <div class="sukses-total-row">
+        <span class="sukses-total-label">Total Transfer</span>
+        <span class="sukses-total-value" id="pop-total">—</span>
+      </div>
+    </div>
+
+    <div class="sukses-btn-group">
+      <button class="btn-sukses-wa" onclick="bukaWhatsApp()">
+        📲 Kirim Bukti via WhatsApp
+      </button>
+      <button class="btn-sukses-home" onclick="window.location.href='index.html'">
+        Kembali ke Beranda
+      </button>
+      <button class="btn-sukses-koleksi" onclick="window.location.href='menu.html'">
+        Lihat Koleksi Lainnya
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">✦ ARFELYA</span>
+  <span>© 2026 ARFELYA — Photocard K-Pop Original & Terpercaya ✦</span>
+</footer>
+
+<script>
+  // ===== ISI OTOMATIS DATA PEMBELI DARI SESI LOGIN =====
+  window.addEventListener('DOMContentLoaded', function () {
+    var session = window.ArfelyaAuth ? window.ArfelyaAuth.getSession() : null;
+    if (session && session.role === 'pembeli') {
+      var namaField = document.getElementById('nama');
+      var waField   = document.getElementById('whatsapp');
+      if (namaField && !namaField.value) namaField.value = session.nama || '';
+      if (waField && !waField.value && session.whatsapp) waField.value = session.whatsapp;
+    }
+  });
+
+  // ===== AUTO-ISI dari parameter URL + LOGIKA KUNCI FORMULIR =====
+  window.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const item   = params.get('item');
+    const harga  = params.get('harga');
+
+    const wrapper  = document.getElementById('pesanan-detail-wrapper');
+    const warning  = document.getElementById('koleksi-warning');
+    const lockBadge = document.getElementById('lock-badge');
+    const btnSubmit = document.querySelector('#form-pesanan .btn-submit');
+
+    if (item) {
+      // ── SUDAH PILIH KOLEKSI: isi form & buka akses ──
+      const fieldSpesifikasi = document.getElementById('detail-pesanan');
+      const hargaBersih = harga ? decodeURIComponent(harga) : '';
+
+      fieldSpesifikasi.value        = decodeURIComponent(item);
+      fieldSpesifikasi.dataset.harga = hargaBersih;
+
+      if (hargaBersih) {
+        document.getElementById('harga-manual').value = hargaBersih;
+      }
+
+      // Highlight sebentar sebagai konfirmasi
+      fieldSpesifikasi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      fieldSpesifikasi.style.borderColor = '#f472b6';
+      fieldSpesifikasi.style.boxShadow   = '0 0 0 3px rgba(244, 114, 182, 0.25)';
+      setTimeout(function () {
+        fieldSpesifikasi.style.borderColor = '';
+        fieldSpesifikasi.style.boxShadow   = '';
+      }, 2500);
+
+    } else {
+      // ── BELUM PILIH KOLEKSI: kunci bagian detail photocard ──
+
+      // Tampilkan banner peringatan & badge kunci
+      warning.classList.add('show');
+      lockBadge.classList.add('show');
+
+      // Tambahkan class locked ke wrapper agar overlay muncul
+      wrapper.classList.add('locked-section');
+
+      // Nonaktifkan semua input di dalam wrapper agar tidak bisa diisi
+      wrapper.querySelectorAll('input, textarea, select').forEach(function(el) {
+        el.disabled = true;
+      });
+
+      // Nonaktifkan tombol submit
+      if (btnSubmit) {
+        btnSubmit.disabled = true;
+        btnSubmit.style.opacity = '0.4';
+        btnSubmit.style.cursor  = 'not-allowed';
+        btnSubmit.style.filter  = 'grayscale(0.5)';
+        btnSubmit.title = 'Pilih koleksi terlebih dahulu dari halaman Koleksi';
+      }
+
+      // Klik pada wrapper terkunci → tampilkan pesan flash
+      wrapper.addEventListener('click', function () {
+        warning.style.animation = 'none';
+        void warning.offsetWidth; // reflow
+        warning.style.animation = 'slideIn 0.3s ease';
+        warning.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    }
+  });
+
+  // ===== HELPER: Parse harga string ke angka =====
+  function parseHarga(str) {
+    if (!str) return 0;
+    return parseInt(str.replace(/[^0-9]/g, '')) || 0;
+  }
+
+  // ===== HELPER: Format angka ke Rupiah =====
+  function formatRupiah(num) {
+    return 'Rp ' + num.toLocaleString('id-ID');
+  }
+
+  // ===== FUNGSI: Sync harga dari input manual =====
+  function syncHargaManual(val) {
+    document.getElementById('detail-pesanan').dataset.harga = val;
+  }
+
+  // ===== FUNGSI: Menuju ke Pembayaran + isi ringkasan =====
+  function tampilkanPembayaran(event) {
+    event.preventDefault();
+
+    // Ambil data dari form
+    const nama   = document.getElementById('nama').value;
+    const detail = document.getElementById('detail-pesanan');
+    const paket  = document.querySelector('input[name="paket"]:checked');
+    const tambahanChecked = document.querySelectorAll('input[name="tambahan"]:checked');
+
+    // Harga dasar dari data-harga attribute
+    let hargaBase = parseHarga(detail.dataset.harga || '');
+
+    // Kalau tidak ada harga dari URL, coba baca dari isi textarea (format "— Harga: Rp x")
+    if (!hargaBase) {
+      const match = detail.value.match(/Rp\s?[\d.,]+/);
+      if (match) hargaBase = parseHarga(match[0]);
+    }
+
+    // Biaya tambahan
+    let biayaTambahan = 0;
+    let labelTambahan = [];
+    tambahanChecked.forEach(function(cb) {
+      if (cb.value === 'toploader')  { biayaTambahan += 3000; labelTambahan.push('Toploader +Rp 3.000'); }
+      if (cb.value === 'wrapping')   { biayaTambahan += 5000; labelTambahan.push('Gift Wrapping +Rp 5.000'); }
+    });
+
+    const total = hargaBase + biayaTambahan;
+
+    // Label paket
+    const paketLabel = {
+      satuan: '🃏 Satuan (Katalog)',
+      bundle: '📦 Bundle Set Era / Member',
+      mystery: '🎁 Mystery Box'
+    };
+
+    // Isi ringkasan
+    document.getElementById('summary-item').textContent  = detail.value || '—';
+    document.getElementById('summary-nama').textContent  = nama || '—';
+    document.getElementById('summary-paket').textContent = paket ? (paketLabel[paket.value] || paket.value) : '—';
+
+    if (labelTambahan.length > 0) {
+      document.getElementById('summary-tambahan').textContent = labelTambahan.join(', ');
+      document.getElementById('summary-tambahan-row').style.display = 'flex';
+      document.getElementById('summary-biaya-tambahan').textContent = '+' + formatRupiah(biayaTambahan);
+      document.getElementById('summary-biaya-tambahan-row').style.display = 'flex';
+    } else {
+      document.getElementById('summary-tambahan-row').style.display = 'none';
+      document.getElementById('summary-biaya-tambahan-row').style.display = 'none';
+    }
+
+    document.getElementById('summary-harga-item').textContent = hargaBase ? formatRupiah(hargaBase) : 'Sesuai Konfirmasi';
+    document.getElementById('summary-total').textContent = total ? formatRupiah(total) : 'Sesuai Konfirmasi';
+    document.getElementById('reminder-total').textContent = total ? formatRupiah(total) : 'jumlah yang dikonfirmasi';
+
+    // Simpan total untuk dipakai reminder setelah pilih metode
+    window._totalBayar = total;
+
+    // Tampilkan form pembayaran
+    document.getElementById('form-pesanan').classList.add('hidden');
+    document.getElementById('form-pembayaran').classList.remove('hidden');
+    document.getElementById('page-title').innerText = "Metode Pembayaran";
+    document.getElementById('page-desc').innerText = "Cek ringkasan pesanan & pilih metode pembayaran.";
+
+    const c1 = document.getElementById('step1-circle');
+    c1.className = 'step-circle done';
+    c1.innerHTML = '✓';
+    document.getElementById('step2-circle').className = 'step-circle active';
+    document.getElementById('step2-label').className = 'step-label active';
+    document.getElementById('step-connector').className = 'step-connector done';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== FUNGSI: Update detail rekening + tampilkan reminder =====
+  function updateDetailPembayaran() {
+    const sel = document.querySelector('input[name="metode"]:checked');
+    if (!sel) return;
+
+    const box = document.getElementById('payment-details-box');
+    box.className = 'payment-detail-card visible';
+
+    const totalTeks = window._totalBayar ? formatRupiah(window._totalBayar) : 'Sesuai Konfirmasi';
+    document.getElementById('reminder-total').textContent = totalTeks;
+    document.getElementById('transfer-reminder').style.display = 'flex';
+
+    let nomorAkun = '';
+
+    if (sel.value === 'dana') {
+      nomorAkun = '0895-1252-3841';
+      box.innerHTML =
+        '<div class="payment-detail-header"><span>🪙 Detail DANA</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Nomor DANA</span><span class="det-value">' + nomorAkun + ' <button type="button" class="copy-btn" onclick="salinTeks(\'' + nomorAkun + '\', this)">Salin</button></span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Atas Nama</span><span class="det-value">Simanjuntak Natalia</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Jumlah Transfer</span><span class="det-value" style="color:#f472b6;font-size:16px;">' + totalTeks + '</span></div>';
+    } else if (sel.value === 'spay') {
+      nomorAkun = '0812-9822-2164';
+      box.innerHTML =
+        '<div class="payment-detail-header"><span>🧡 Detail ShopeePay</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Nomor ShopeePay</span><span class="det-value">' + nomorAkun + ' <button type="button" class="copy-btn" onclick="salinTeks(\'' + nomorAkun + '\', this)">Salin</button></span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Atas Nama</span><span class="det-value">Andi Restu Islami Asmara</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Jumlah Transfer</span><span class="det-value" style="color:#f472b6;font-size:16px;">' + totalTeks + '</span></div>';
+    } else if (sel.value === 'tf_bank') {
+      nomorAkun = '166-000-484-4973';
+      box.innerHTML =
+        '<div class="payment-detail-header"><span>🏦 Detail Bank Mandiri</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Nomor Rekening</span><span class="det-value">' + nomorAkun + ' <button type="button" class="copy-btn" onclick="salinTeks(\'' + nomorAkun + '\', this)">Salin</button></span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Atas Nama</span><span class="det-value">RAHAYU NUR SYIFA</span></div>' +
+        '<div class="payment-detail-row"><span class="det-label">Jumlah Transfer</span><span class="det-value" style="color:#f472b6;font-size:16px;">' + totalTeks + '</span></div>';
+    }
+  }
+
+  // ===== FUNGSI: Salin nomor ke clipboard =====
+  function salinTeks(teks, btn) {
+    const nomorBersih = teks.replace(/-/g, '');
+
+    function berhasil() {
+      btn.textContent = '✓ Disalin';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'Salin'; btn.classList.remove('copied'); }, 2000);
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(nomorBersih).then(berhasil).catch(function() {
+        fallbackCopy(nomorBersih, berhasil);
+      });
+    } else {
+      fallbackCopy(nomorBersih, berhasil);
+    }
+  }
+
+  function fallbackCopy(teks, callback) {
+    const el = document.createElement('textarea');
+    el.value = teks;
+    el.setAttribute('readonly', '');
+    el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+    document.body.appendChild(el);
+    el.select();
+    el.setSelectionRange(0, 99999);
+    try {
+      document.execCommand('copy');
+      callback();
+    } catch(e) {
+      alert('Gagal menyalin. Nomor: ' + teks);
+    }
+    document.body.removeChild(el);
+  }
+
+  // ===== FUNGSI: Kembali ke form pesanan =====
+  function kembaliKePesanan() {
+    document.getElementById('form-pembayaran').classList.add('hidden');
+    document.getElementById('form-pesanan').classList.remove('hidden');
+    document.getElementById('page-title').innerText = "Formulir Pemesanan";
+    document.getElementById('page-desc').innerText = "Lengkapi detail di bawah ini untuk mengamankan photocard impianmu. Klaim item favoritmu sebelum kehabisan!";
+    const c1 = document.getElementById('step1-circle');
+    c1.className = 'step-circle active';
+    c1.innerHTML = '1';
+    document.getElementById('step2-circle').className = 'step-circle inactive';
+    document.getElementById('step2-label').className = 'step-label inactive';
+    document.getElementById('step-connector').className = 'step-connector';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ===== FUNGSI: Buka WhatsApp dengan data pesanan =====
+  function bukaWhatsApp() {
+    const nomorWA    = '6289512523841';
+    const itemUser   = document.getElementById('pop-item').textContent || '—';
+    const namaUser   = document.getElementById('pop-nama').textContent || '—';
+    const metodeUser = document.getElementById('pop-metode').textContent || '—';
+    const nomorUser  = document.getElementById('pop-nomor').textContent || '—';
+    const atasNama   = document.getElementById('pop-atasnama').textContent || '—';
+    const totalUser  = document.getElementById('pop-total').textContent || '—';
+    const waUser     = document.getElementById('whatsapp') ? document.getElementById('whatsapp').value : '—';
+    const alamatUser = document.getElementById('alamat') ? document.getElementById('alamat').value : '—';
+    const paketSel   = document.querySelector('input[name="paket"]:checked');
+    const paketLabel = { satuan: 'Satuan (Katalog)', bundle: 'Bundle Set Era / Member', mystery: 'Mystery Box' };
+    const paketNama  = paketSel ? (paketLabel[paketSel.value] || paketSel.value) : '—';
+
+    const pesanWA =
+      '✦ *BUKTI PEMBAYARAN & PESANAN — ARFELYA* ✦\n\n' +
+      ' *Detail Pesanan:*\n' +
+      '• Photocard   : ' + itemUser + '\n' +
+      '• Jenis Paket : ' + paketNama + '\n\n' +
+      ' *Data Pemesan:*\n' +
+      '• Nama      : ' + namaUser + '\n' +
+      '• No. WA    : ' + waUser + '\n' +
+      '• Alamat    : ' + alamatUser + '\n\n' +
+      ' *Pembayaran:*\n' +
+      '• Metode    : ' + metodeUser + '\n' +
+      '• Tujuan    : ' + nomorUser + ' (a.n. ' + atasNama + ')\n' +
+      '• Total     : ' + totalUser + '\n\n' +
+      '_Mohon lampirkan bukti transfer di bawah pesan ini. Terima kasih sudah berbelanja di Arfelya!🙏_';
+
+    window.open('https://wa.me/' + nomorWA + '?text=' + encodeURIComponent(pesanWA), '_blank');
+  }
+
+  // ===== FUNGSI: Selesaikan pembayaran =====
+  function selesaiPembayaran(event) {
+    event.preventDefault();
+    const sel = document.querySelector('input[name="metode"]:checked');
+    if (!sel) {
+      const label = document.querySelector('#form-pembayaran .form-group > label');
+      label.style.color = '#f472b6';
+      setTimeout(() => label.style.color = '', 2000);
+      return;
+    }
+
+    const metodeData = {
+      dana:    { label: 'DANA',             nomor: '0895-1252-3841',  nama: 'Simanjuntak Natalia' },
+      spay:    { label: 'ShopeePay',        nomor: '0812-9822-2164',  nama: 'Andi Restu Islami Asmara' },
+      tf_bank: { label: 'Transfer Mandiri', nomor: '166-000-484-4973', nama: 'RAHAYU NUR SYIFA' }
+    };
+
+    const m         = metodeData[sel.value];
+    const totalTeks = window._totalBayar ? formatRupiah(window._totalBayar) : 'Sesuai Konfirmasi';
+    const namaUser  = document.getElementById('nama').value || '—';
+    const waUser    = document.getElementById('whatsapp').value || '—';
+    const alamatUser = document.getElementById('alamat').value || '—';
+    const itemUser  = document.getElementById('detail-pesanan').value || '—';
+    const paketSel  = document.querySelector('input[name="paket"]:checked');
+    const paketLabel = { satuan: 'Satuan (Katalog)', bundle: 'Bundle Set Era / Member', mystery: 'Mystery Box' };
+
+    // ===== SIMPAN PESANAN KE localStorage =====
+    const pesananBaru = {
+      id: 'ARF-' + Date.now(),
+      waktu: new Date().toISOString(),
+      nama: namaUser,
+      whatsapp: waUser,
+      alamat: alamatUser,
+      item: itemUser,
+      paket: paketSel ? (paketLabel[paketSel.value] || paketSel.value) : '—',
+      metode: m.label,
+      nomor: m.nomor,
+      total: totalTeks,
+      totalAngka: window._totalBayar || 0,
+      status: 'Menunggu Konfirmasi'
+    };
+    const semuaPesanan = JSON.parse(localStorage.getItem('arfelya-orders') || '[]');
+    semuaPesanan.unshift(pesananBaru);
+    localStorage.setItem('arfelya-orders', JSON.stringify(semuaPesanan));
+
+    // Isi popup sukses
+    document.getElementById('pop-item').textContent     = itemUser;
+    document.getElementById('pop-nama').textContent     = namaUser;
+    document.getElementById('pop-metode').textContent   = m.label;
+    document.getElementById('pop-nomor').textContent    = m.nomor;
+    document.getElementById('pop-atasnama').textContent = m.nama;
+    document.getElementById('pop-total').textContent    = totalTeks;
+
+    document.getElementById('popup-sukses').classList.add('show');
+
+    // ===== REDIRECT KE WHATSAPP SETELAH POPUP MUNCUL =====
+    const nomorWA = '6289512523841'; // Nomor WA tujuan (tanpa + dan 0 di depan)
+    const paketNama = paketSel ? (paketLabel[paketSel.value] || paketSel.value) : '—';
+    const pesanWA =
+      '✦ *BUKTI PEMBAYARAN & PESANAN — ARFELYA* ✦\n\n' +
+      ' *Detail Pesanan:*\n' +
+      '• Photocard   : ' + itemUser + '\n' +
+      '• Jenis Paket : ' + paketNama + '\n\n' +
+      ' *Data Pemesan:*\n' +
+      '• Nama      : ' + namaUser + '\n' +
+      '• No. WA    : ' + waUser + '\n' +
+      '• Alamat    : ' + alamatUser + '\n\n' +
+      ' *Pembayaran:*\n' +
+      '• Metode    : ' + m.label + '\n' +
+      '• Tujuan    : ' + m.nomor + ' (a.n. ' + m.nama + ')\n' +
+      '• Total     : ' + totalTeks + '\n\n' +
+      '_Mohon lampirkan bukti transfer di bawah pesan ini. Terima kasih sudah berbelanja di Arfelya! 🙏_';
+
+    setTimeout(function () {
+      window.open('https://wa.me/' + nomorWA + '?text=' + encodeURIComponent(pesanWA), '_blank');
+    }, 300000);
+  }
+</script>
+
+</body>
+</html>

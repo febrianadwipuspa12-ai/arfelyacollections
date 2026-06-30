@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koleksi - ARFELYA | Toko Photocard K-Pop</title>
+  <meta name="description" content="Lihat daftar lengkap koleksi photocard K-Pop di ARFELYA — BTS, CORTIS, SEVENTEEN, dan banyak lagi dengan harga terbaik.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>">
+  <script src="theme.js"></script>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Outfit', sans-serif; background-color: #0f0a1e; color: #e8e0f5; line-height: 1.6; overflow-x: hidden; }
+    body::before {
+      content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(ellipse at 20% 50%, rgba(155, 89, 217, 0.06) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 20%, rgba(230, 100, 180, 0.05) 0%, transparent 50%);
+      z-index: -1; pointer-events: none;
+    }
+
+    /* ===== NAVIGATION ===== */
+    nav {
+      background: rgba(15, 10, 30, 0.85); backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 999;
+      border-bottom: 1px solid rgba(155, 89, 217, 0.25);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0 5%; gap: 12px; }
+    .nav-logo { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; padding: 16px 0; letter-spacing: 1px; }
+    nav ul { list-style-type: none; display: flex; }
+    nav ul li a { display: block; color: #c4b5e8; text-decoration: none; padding: 20px 22px; font-size: 13px; font-weight: 600; text-transform: uppercase; transition: all 0.3s; position: relative; }
+    nav ul li a::after { content: ''; position: absolute; bottom: 10px; left: 22px; right: 22px; height: 2px; background: linear-gradient(90deg, #c084fc, #f472b6); transform: scaleX(0); transition: transform 0.3s; border-radius: 2px; }
+    nav ul li a:hover, nav ul li a.active { color: #f0e6ff; }
+    nav ul li a:hover::after, nav ul li a.active::after { transform: scaleX(1); }
+
+    /* ===== PAGE HEADER ===== */
+    .page-header {
+      text-align: center; padding: 70px 8% 50px;
+      background: linear-gradient(180deg, rgba(147,51,234,0.1) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+      position: relative; overflow: hidden;
+    }
+    /* Subtle sparkle dots in header */
+
+    .page-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); background: linear-gradient(135deg, #f0e6ff 0%, #c084fc 50%, #f472b6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 10px; }
+    .page-header p { color: #8b7aaa; font-size: 15px; }
+
+    /* ===== STATS TICKER BAR (NEW) ===== */
+    .stats-bar {
+      display: flex; justify-content: center; align-items: center; gap: 40px;
+      padding: 14px 8%; flex-wrap: wrap;
+      background: rgba(147, 51, 234, 0.05);
+      border-bottom: 1px solid rgba(147, 51, 234, 0.1);
+    }
+    .stats-bar-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9d8fc2; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stats-bar-item span.val { color: #f472b6; font-size: 18px; font-weight: 800; font-family: 'DM Serif Display', serif; }
+    .stats-bar-divider { width: 1px; height: 28px; background: rgba(147, 51, 234, 0.2); }
+
+    /* ===== FILTER BAR ===== */
+    .filter-bar { padding: 28px 8% 10px; display: flex; gap: 14px; flex-wrap: wrap; align-items: center; justify-content: center; }
+    .filter-search { flex: 1 1 260px; max-width: 380px; position: relative; }
+    .filter-search input { width: 100%; padding: 12px 18px 12px 44px; font-family: 'Outfit', sans-serif; font-size: 14px; color: #f0e6ff; background: rgba(15, 10, 30, 0.7); border: 1px solid rgba(147, 51, 234, 0.3); border-radius: 50px; outline: none; transition: all 0.3s; }
+    .filter-search input:focus { border-color: #c084fc; box-shadow: 0 0 12px rgba(192, 132, 252, 0.2); }
+    .filter-search input::placeholder { color: #5c4e78; }
+    .filter-search::before { content: '🔍'; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; }
+    .filter-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .filter-tag { padding: 8px 18px; border-radius: 50px; font-size: 12px; font-weight: 700; cursor: pointer; border: 1.5px solid rgba(147, 51, 234, 0.25); color: #9d8fc2; background: rgba(147, 51, 234, 0.06); transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; user-select: none; }
+    .filter-tag:hover, .filter-tag.active { background: linear-gradient(135deg, rgba(147,51,234,0.25), rgba(236,72,153,0.2)); border-color: rgba(192,132,252,0.5); color: #f0e6ff; }
+    .filter-tag.active { box-shadow: 0 0 12px rgba(192,132,252,0.2); }
+
+    /* ===== RESULTS COUNT ===== */
+    .results-info { text-align: center; padding: 10px 8% 0; font-size: 13px; color: #5c4e78; }
+    .results-info span { color: #c084fc; font-weight: 700; }
+
+    section { padding: 40px 8% 70px; }
+    h2.section-title { font-family: 'DM Serif Display', serif; font-size: 32px; color: #f0e6ff; text-align: center; margin-bottom: 8px; }
+    .section-sub { text-align: center; color: #8b7aaa; font-size: 14px; margin-bottom: 12px; }
+    .divider { width: 60px; height: 3px; background: linear-gradient(to right, #9333ea, #ec4899); margin: 0 auto 40px; border-radius: 2px; }
+
+    /* ===== CARD CATEGORY ===== */
+    .card-category { margin-bottom: 50px; }
+    .card-category h3 {
+      font-family: 'DM Serif Display', serif; font-size: 22px; color: #e2d4f7;
+      border-left: 4px solid transparent;
+      border-image: linear-gradient(to bottom, #9333ea, #ec4899) 1;
+      padding-left: 16px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-list-unordered { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .card-list-unordered li { font-size: 13px; color: #9d8fc2; background: rgba(236, 72, 153, 0.08); border: 1px solid rgba(236, 72, 153, 0.15); padding: 5px 14px; border-radius: 50px; cursor: default; transition: background 0.2s; }
+    .card-list-unordered li:hover { background: rgba(236, 72, 153, 0.14); }
+    .card-list-unordered li::before { content: "♡ "; color: #f472b6; }
+
+    /* ===== PRODUCT GRID ===== */
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 22px; }
+    .product-card {
+      background: rgba(255,255,255,0.03); border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(192, 132, 252, 0.12);
+      transition: all 0.35s ease; cursor: pointer;
+      animation: cardIn 0.5s ease both;
+    }
+    .product-card.hidden-card { display: none; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .product-card:hover { transform: translateY(-10px); border-color: rgba(192, 132, 252, 0.4); box-shadow: 0 20px 50px rgba(147, 51, 234, 0.25); }
+    
+    /* DISESUAIKAN: Menyamakan ukuran tinggi image-wrap dengan halaman index (330px) */
+    .product-card-img-wrap { position: relative; overflow: hidden; width: 100%; height: 330px; }
+    .product-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .product-card:hover img { transform: scale(1.07); }
+    .product-card-badge {
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+      padding: 4px 10px; border-radius: 6px; text-transform: uppercase;
+    }
+    .badge-hot { background: linear-gradient(135deg, #9333ea, #ec4899); color: #fff; }
+    .badge-new { background: linear-gradient(135deg, #0ea5e9, #6366f1); color: #fff; }
+    .badge-sale { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; }
+    .badge-rare { background: linear-gradient(135deg, #10b981, #0ea5e9); color: #fff; }
+
+    /* Stock badge */
+    .badge-stock {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;
+      background: rgba(15, 10, 30, 0.8); color: #f472b6; border: 1px solid rgba(244,114,182,0.3);
+    }
+
+    /* Quick action overlay */
+    .card-overlay { position: absolute; inset: 0; background: rgba(15, 10, 30, 0.6); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; z-index: 1; }
+    .product-card:hover .card-overlay { opacity: 1; }
+    .btn-quick { background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; border: none; padding: 10px 24px; border-radius: 50px; font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; box-shadow: 0 6px 20px rgba(168,85,247,0.4); }
+
+    .product-card-body { padding: 18px 20px 22px; }
+    .product-group { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #9333ea; margin-bottom: 5px; }
+    .product-card-body h4 { font-size: 15px; font-weight: 700; color: #e2d4f7; margin-bottom: 6px; }
+    .product-card-body p { font-size: 12px; color: #6b5d88; margin-bottom: 14px; min-height: 36px; line-height: 1.5; }
+    .product-price { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(147, 51, 234, 0.12); padding-top: 14px; }
+    .product-price .price { font-size: 17px; font-weight: 800; background: linear-gradient(135deg, #c084fc, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .product-price .price-was { font-size: 11px; color: #4a3e65; text-decoration: line-through; display: block; }
+    .btn-add { background: linear-gradient(135deg, #9333ea, #ec4899); color: #fff; border: none; padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-add:hover { opacity: 0.85; transform: scale(1.05); }
+
+    /* ===== GROUP DIVIDERS (NEW) ===== */
+    .group-header {
+      display: flex; align-items: center; gap: 16px;
+      margin: 40px 0 20px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(147, 51, 234, 0.12);
+    }
+    .group-header-label {
+      font-family: 'DM Serif Display', serif; font-size: 18px; color: #c084fc;
+      white-space: nowrap;
+    }
+    .group-header-line { flex: 1; height: 1px; background: linear-gradient(to right, rgba(147,51,234,0.3), transparent); }
+    .group-header-count { font-size: 11px; color: #5c4e78; font-weight: 600; letter-spacing: 1px; white-space: nowrap; }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 60px 20px; color: #5c4e78; display: none; }
+    .empty-state.visible { display: block; }
+    .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state p { font-size: 15px; }
+
+    /* ===== TABLE ===== */
+    .table-section { background: transparent; padding: 40px 8% 70px; }
+    .table-container-box { max-width: 800px; margin: 0 auto; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(147, 51, 234, 0.2); border-radius: 16px; padding: 28px; }
+    .table-internal-header { font-size: 15px; font-weight: 700; color: #c084fc; margin-bottom: 16px; }
+    table.table-operasional { width: 100%; border-collapse: collapse; font-size: 14px; color: #c4b5e8; }
+    table.table-operasional th, table.table-operasional td { border: 1px solid rgba(147, 51, 234, 0.2); padding: 14px 16px; text-align: left; }
+    table.table-operasional th { background-color: rgba(147, 51, 234, 0.15); color: #ffffff; font-weight: 700; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+    table.table-operasional tr:hover td { background-color: rgba(192, 132, 252, 0.04); }
+    .status-text-flex { display: flex; align-items: center; gap: 8px; }
+    .dot-indicator { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .bg-green { background-color: #2ecc71; box-shadow: 0 0 6px rgba(46, 204, 113, 0.6); }
+    .bg-yellow { background-color: #f1c40f; box-shadow: 0 0 6px rgba(241, 196, 15, 0.6); }
+    .bg-red { background-color: #e74c3c; box-shadow: 0 0 6px rgba(231, 76, 60, 0.6); }
+
+    /* ===== BANNER PROMO STRIP (NEW) ===== */
+    .promo-strip {
+      margin: 0 8% 32px;
+      padding: 18px 28px;
+      background: linear-gradient(135deg, rgba(147,51,234,0.18), rgba(219,39,119,0.15));
+      border: 1px solid rgba(244, 114, 182, 0.25);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .promo-strip-text { font-size: 14px; color: #e2d4f7; }
+    .promo-strip-text strong { color: #f472b6; }
+    .promo-strip-cta { font-size: 12px; font-weight: 700; color: #f0e6ff; background: linear-gradient(135deg, #9333ea, #ec4899); padding: 8px 20px; border-radius: 50px; text-decoration: none; letter-spacing: 0.5px; text-transform: uppercase; transition: all 0.2s; white-space: nowrap; }
+    .promo-strip-cta:hover { opacity: 0.85; transform: scale(1.02); }
+
+    footer { background: #070410; color: #6b5d88; padding: 40px 8% 20px; text-align: center; font-size: 13px; border-top: 1px solid rgba(147, 51, 234, 0.1); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">ARFELYA</div>
+    <ul>
+      <li><a href="index.html">Beranda</a></li>
+      <li><a href="menu.html" class="active">Koleksi</a></li>
+      <li><a href="reservasi.html">Pemesanan</a></li>
+      <li><a href="kontak.html">Kontak & Info</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page-header">
+  <h1>Koleksi Photocard</h1>
+  <p>Temukan photocard idolamu — official, kondisi terjamin, harga terbaik</p>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-search">
+    <input type="text" id="search-input" placeholder="Cari member, era, grup...">
+  </div>
+  <div class="filter-tags">
+    <div class="filter-tag active" data-group="all">Semua</div>
+    <div class="filter-tag" data-group="BTS">BTS</div>
+    <div class="filter-tag" data-group="CORTIS">CORTIS</div>
+    <div class="filter-tag" data-group="SEVENTEEN">SEVENTEEN</div>
+    <div class="filter-tag" data-group="ENHYPEN">ENHYPEN</div>
+    <div class="filter-tag" data-group="ZB1">ZB1</div>
+    <div class="filter-tag" data-group="STRAY KIDS">STRAY KIDS</div>
+    <div class="filter-tag" data-group="TWS">TWS</div>
+  </div>
+</div>
+<div class="results-info"><span id="result-count">18</span> photocard tersedia</div>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip reveal">
+  <div class="promo-strip-text">🎉 <strong>Promo Bulan Ini:</strong> Diskon hingga 60% untuk item pilihan — stok terbatas!</div>
+  <a href="index.html#promo-spesial" class="promo-strip-cta">Lihat Promo</a>
+</div>
+
+
+<section>
+  <h2 class="section-title">Koleksi Tersedia</h2>
+  <p class="section-sub">Stok terbatas — update mingguan setiap Senin</p>
+  <div class="divider"></div>
+
+  <div class="card-category">
+    <div class="product-grid" id="product-grid">
+
+      <!-- ===== BTS ===== -->
+      <div class="product-card" data-group="BTS" data-search="bts jungkook proof era original big hit mint">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-hot">🔥 Terlaris</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('BTS - Jungkook PC (Proof Era, original Big Hit, kondisi mint)','Rp 196.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/14/05/45/1405459546eae0941fa9b23d28e1c40b.jpg" alt="BTS Jungkook PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">BTS</div>
+          <h4>BTS — Jungkook PC</h4>
+          <p>Photocard Jungkook Proof era, original Big Hit, kondisi mint</p>
+          <div class="product-price">
+            <div><span class="price">Rp 196.000</span></div>
+            <button class="btn-add" onclick="pesanItem('BTS - Jungkook PC (Proof Era, original Big Hit, kondisi mint)','Rp 196.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="BTS" data-search="bts jimin face album mint original big hit">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-hot">🏷️ Sale</span>
+          <span class="badge-stock">Stok 1</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('BTS - Jungkook Arirang Rooted In Music ver, original Big Hit, kondisi mint)','Rp 215.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/b3/ce/ab/b3ceab26fd9e171dd22331f5b0bd0b72.jpg" alt="BTS Jimin PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">BTS</div>
+          <h4>BTS — Jungkook PC</h4>
+          <p>Photocard Jungkook Arirang Rooted In Music ver, original Big Hit, kondisi mint</p>
+          <div class="product-price">
+            <div><span class="price">Rp 65.000</span><span class="price-was">Rp 150.000</span></div>
+            <button class="btn-add" onclick="pesanItem('BTS - Jungkook Arirang Rooted In Music ver, original Big Hit, kondisi mint)','Rp 65.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="BTS" data-search="bts v taehyung layover solo mint big hit original">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 3</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('BTS - V (Taehyung) PC (Layover solo album era, kondisi mint, original Big Hit)','Rp 315.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/1200x/9b/37/59/9b37591ae5af07cb68ec7ea264eb857e.jpg" alt="BTS V PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">BTS</div>
+          <h4>BTS — V (Taehyung) PC</h4>
+          <p>Photocard V (Taehyung) 'Layover' Draw M2U ver, kondisi mint, original Big Hit</p>
+          <div class="product-price">
+            <div><span class="price">Rp 315.000</span></div>
+            <button class="btn-add" onclick="pesanItem('BTS - V (Taehyung) PC Layover Draw M2U ver, kondisi mint, original Big Hit)','Rp 315.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== CORTIS ===== -->
+      <div class="product-card" data-group="CORTIS" data-search="cortis martin greengreen era nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('CORTIS - Martin PC (GREENGREEN era, kondisi NM, dengan sleeve bawaan)','Rp 664.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/29/76/8c/29768c46b65e2b51329757a4b0c3b0d1.jpg" alt="CORTIS Martin PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">CORTIS</div>
+          <h4>CORTIS — Martin PC</h4>
+          <p>Photocard Martin GREENGREEN era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 664.000</span></div>
+            <button class="btn-add" onclick="pesanItem('CORTIS - Martin PC (GREENGREEN era, kondisi NM, dengan sleeve bawaan)','Rp 664.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="CORTIS" data-search="cortis gio greengreen japan pob reverse nm sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-sale">🏷️ Sale</span>
+          <span class="badge-stock">Stok 4</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('CORTIS - Gio PC (GREENGREEN Japan Pob Reverse Ver, kondisi NM, sleeve bawaan)','Rp 55.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/57/bf/23/57bf23cccac3934daa5fc4c9651b5dd2.jpg" alt="CORTIS Gio PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">CORTIS</div>
+          <h4>CORTIS — Gio PC</h4>
+          <p>Photocard Gio GREENGREEN Japan Pob Reverse Ver, kondisi NM, sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 55.000</span><span class="price-was">Rp 120.000</span></div>
+            <button class="btn-add" onclick="pesanItem('CORTIS - Gio PC (GREENGREEN Japan Pob Reverse Ver, kondisi NM, sleeve bawaan)','Rp 55.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SEVENTEEN ===== -->
+      <div class="product-card" data-group="SEVENTEEN" data-search="seventeen jeonghan fml era nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('SEVENTEEN - Jeonghan PC (FML era, kondisi NM, dengan sleeve bawaan)','Rp 232.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/webp85/736x/b5/af/02/b5af025adf0e6dc2469ddfe4131309f7.webp" alt="SEVENTEEN Jeonghan PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">SEVENTEEN</div>
+          <h4>SEVENTEEN — Jeonghan PC</h4>
+          <p>Photocard Jeonghan FML era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 232.000</span></div>
+            <button class="btn-add" onclick="pesanItem('SEVENTEEN - Jeonghan PC (FML era, kondisi NM, dengan sleeve bawaan)','Rp 232.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="SEVENTEEN" data-search="seventeen wonwoo spill the feels nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 1</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('SEVENTEEN - Wonwoo PC (Spill The Feels era, kondisi NM, dengan sleeve bawaan)','Rp 221.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/6e/54/8f/6e548f3ae647199d50560f7e216255af.jpg" alt="SEVENTEEN Wonwoo PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">SEVENTEEN</div>
+          <h4>SEVENTEEN — Wonwoo PC</h4>
+          <p>Photocard Wonwoo Spill The Feels era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 221.000</span></div>
+            <button class="btn-add" onclick="pesanItem('SEVENTEEN - Wonwoo PC (Spill The Feels era, kondisi NM, dengan sleeve bawaan)','Rp 221.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="SEVENTEEN" data-search="seventeen wonwoo face the sun carat ver nm sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-sale">🏷️ Sale</span>
+          <span class="badge-stock">Stok 5</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('SEVENTEEN - Mingyu PC (Face The Sun Carat Ver, kondisi NM, dengan sleeve bawaan)','Rp 30.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/56/f9/37/56f937de1b3e5afae872233c944251be.jpg" alt="SEVENTEEN Mingyu PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">SEVENTEEN</div>
+          <h4>SEVENTEEN — Wonwoo PC</h4>
+          <p>Photocard Wonwoo Face The Sun Carat Ver, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 30.000</span><span class="price-was">Rp 85.000</span></div>
+            <button class="btn-add" onclick="pesanItem('SEVENTEEN - Mingyu PC (Face The Sun Carat Ver, kondisi NM, dengan sleeve bawaan)','Rp 30.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ENHYPEN ===== -->
+      <div class="product-card" data-group="ENHYPEN" data-search="enhypen sunghoon romance untold nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-hot">🔥 Terlaris</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('ENHYPEN - Sunghoon PC (Romance Untold era, kondisi NM, dengan sleeve bawaan)','Rp 1.107.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/37/5d/8b/375d8b1835b64aa30c25c955841908e4.jpg" alt="ENHYPEN Sunghoon PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">ENHYPEN</div>
+          <h4>ENHYPEN — Sunghoon PC</h4>
+          <p>Photocard Sunghoon Romance Untold era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 1.107.000</span></div>
+            <button class="btn-add" onclick="pesanItem('ENHYPEN - Sunghoon PC (Romance Untold era, kondisi NM, dengan sleeve bawaan)','Rp 1.107.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="ENHYPEN" data-search="enhypen jay border carnival nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 3</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('ENHYPEN - Jay PC (Border: Carnival era, kondisi NM, dengan sleeve bawaan)','Rp 145.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/1200x/2b/81/27/2b8127a84e478199394089caf34021a9.jpg" alt="ENHYPEN Jay PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">ENHYPEN</div>
+          <h4>ENHYPEN — Jay PC</h4>
+          <p>Photocard Jay Border: Carnival era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 145.000</span></div>
+            <button class="btn-add" onclick="pesanItem('ENHYPEN - Jay PC (Border: Carnival era, kondisi NM, dengan sleeve bawaan)','Rp 145.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="ENHYPEN" data-search="enhypen Ni-ki DESIRE:UNLEASH era nm sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-rare">💎 Rare</span>
+          <span class="badge-stock">Stok 1</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('ENHYPEN - Ni-ki PC (DESIRE:UNLEASH era, kondisi NM, rare find!)','Rp 320.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/a2/9c/cb/a29ccb49b339888f68b12d6ac2e6d8f0.jpg" alt="ENHYPEN Ni-ki PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">ENHYPEN</div>
+          <h4>ENHYPEN — Ni-ki PC</h4>
+          <p>Photocard Ni-ki DESIRE:UNLEASH era, kondisi NM, rare find!</p>
+          <div class="product-price">
+            <div><span class="price">Rp 320.000</span></div>
+            <button class="btn-add" onclick="pesanItem('ENHYPEN - Ni-ki PC (DESIRE:UNLEASH era, kondisi NM, rare find!)','Rp 320.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ZB1 ===== -->
+      <div class="product-card" data-group="ZB1" data-search="zb1 Taerae Youth In The Shade era nm sleeve bawaan">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 4</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('ZB1 - Taerae PC ( Youth In The Shade era, kondisi NM, dengan sleeve bawaan)','Rp 70.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/1200x/44/fb/e0/44fbe0a4d325ca484c9aea3f5f594c0d.jpg" alt="ZB1 Taerae PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">ZB1</div>
+          <h4>ZB1 — Taerae PC</h4>
+          <p>Photocard Taerae Youth In The Shade era, kondisi NM, dengan sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 70.000</span></div>
+            <button class="btn-add" onclick="pesanItem('ZB1 - Taerae PC ( Youth In The Shade era, kondisi NM, dengan sleeve bawaan)','Rp 70.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="ZB1" data-search="zb1 Hanbin Blue Paradise Digipack Ver. nm sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('ZB1 - Hanbin PC (Blue Paradise Digipack Ver., kondisi NM, sleeve bawaan)','Rp 88.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/e7/48/74/e748742cefd292f3ef25b6fcfa33d79b.jpg" alt="ZB1 Ricky PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">ZB1</div>
+          <h4>ZB1 — Hanbin PC</h4>
+          <p>Photocard Hanbin Blue Paradise Digipack Ver. , kondisi NM, sleeve bawaan</p>
+          <div class="product-price">
+            <div><span class="price">Rp 88.000</span></div>
+            <button class="btn-add" onclick="pesanItem('ZB1 - Hanbin PC (Blue Paradise Digipack Ver., kondisi NM, sleeve bawaan)','Rp 88.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STRAY KIDS ===== -->
+      <div class="product-card" data-group="STRAY KIDS" data-search="stray kids felix maxident era nm sleeve original jyp">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-hot">🔥 Terlaris</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('Stray Kids - Felix PC (MAXIDENT era, original JYP, kondisi NM dengan sleeve)','Rp 178.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/1b/e6/e8/1be6e8bb6abbf7cd877df416620ad699.jpg" alt="Stray Kids Felix PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">STRAY KIDS</div>
+          <h4>Stray Kids — Felix PC</h4>
+          <p>Photocard Felix MAXIDENT era, original JYP, kondisi NM dengan sleeve</p>
+          <div class="product-price">
+            <div><span class="price">Rp 178.000</span></div>
+            <button class="btn-add" onclick="pesanItem('Stray Kids - Felix PC (MAXIDENT era, original JYP, kondisi NM dengan sleeve)','Rp 178.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="STRAY KIDS" data-search="stray kids hyunjin rock-star era nm sleeve original jyp">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-rare">💎 Rare</span>
+          <span class="badge-stock">Stok 1</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('Stray Kids - Hyunjin PC (Rock-Star era, kondisi NM, original JYP dengan sleeve)','Rp 245.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/eb/25/5d/eb255d366e2b73fb348a04bf1a15d81d.jpg" alt="Stray Kids Hyunjin PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">STRAY KIDS</div>
+          <h4>Stray Kids — Hyunjin PC</h4>
+          <p>Photocard Hyunjin Rock-Star era, kondisi NM, original JYP dengan sleeve</p>
+          <div class="product-price">
+            <div><span class="price">Rp 245.000</span></div>
+            <button class="btn-add" onclick="pesanItem('Stray Kids - Hyunjin PC (Rock-Star era, kondisi NM, original JYP dengan sleeve)','Rp 245.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TWS ===== -->
+      <div class="product-card" data-group="TWS" data-search="'Try With Us' Weverse Japan 1.0 POB Photobook Ver. dengan sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-hot">🔥 Terlaris</span>
+          <span class="badge-stock">Stok 3</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('TWS - Dohoon PC (3rd Mini Album Try With Us, Weverse Japan 1.0 POB Photobook Ver, dengan sleeve)','Rp 120.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/62/a1/91/62a1911ebaa04f76963a055dcb1ed0af.jpg" alt="TWS Dohoon PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">TWS</div>
+          <h4>TWS — Dohoon PC</h4>
+          <p>3rd Mini Album 'Try With Us' Weverse Japan 1.0 POB Photobook Ver. dengan sleeve</p>
+          <div class="product-price">
+            <div><span class="price">Rp 120.000</span></div>
+            <button class="btn-add" onclick="pesanItem('TWS - Dohoon PC (3rd Mini Album Try With Us, Weverse Japan 1.0 POB Photobook Ver, dengan sleeve)','Rp 120.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="TWS" data-search="'summer beat' now ver, kondisi NM dengan sleeve">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-new">✨ New</span>
+          <span class="badge-stock">Stok 2</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('TWS - Shinyu PC (summer beat! Now Ver, kondisi NM dengan sleeve)','Rp 102.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/51/d3/98/51d3985218d557b42490c6b2b51a7141.jpg" alt="TWS Shinyu PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">TWS</div>
+          <h4>TWS — Shinyu PC</h4>
+          <p> 'summer beat' now ver, kondisi NM dengan sleeve</p>
+          <div class="product-price">
+            <div><span class="price">Rp 102.000</span></div>
+            <button class="btn-add" onclick="pesanItem('TWS - Shinyu PC (summer beat! Now Ver, kondisi NM dengan sleeve)','Rp 102.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-group="TWS" data-search="Photocard 'sparkling blue' sparkling version, kondisi NM, rare!">
+        <div class="product-card-img-wrap">
+          <span class="product-card-badge badge-rare">💎 Rare</span>
+          <span class="badge-stock">Stok 1</span>
+          <div class="card-overlay"><button class="btn-quick" onclick="pesanItem('TWS - Hanjin PC (sparkling blue, Sparkling Version, kondisi NM, rare!)','Rp 290.000')">Pesan Sekarang</button></div>
+          <img src="https://i.pinimg.com/736x/a5/bf/0a/a5bf0aa1d410555ee0e586b8989eb88e.jpg" alt="TWS Hanjin PC">
+        </div>
+        <div class="product-card-body">
+          <div class="product-group">TWS</div>
+          <h4>TWS — Hanjin PC</h4>
+          <p>Photocard 'sparkling blue' sparkling version, kondisi NM, rare!</p>
+          <div class="product-price">
+            <div><span class="price">Rp 290.000</span></div>
+            <button class="btn-add" onclick="pesanItem('TWS - Hanjin PC (sparkling blue, Sparkling Version, kondisi NM, rare!)','Rp 290.000')">Pesan</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">🔍</div>
+      <p>Tidak ada photocard yang cocok.<br>Coba kata kunci lain atau hubungi CS kami.</p>
+    </div>
+  </div>
+</section>
+
+<section class="table-section">
+  <h2 class="section-title">Waktu Operasional Toko</h2>
+  <p class="section-sub">Jadwal aktif layanan pelanggan dan pemrosesan pesanan</p>
+  <div class="divider"></div>
+  
+  <div class="table-container-box">
+    <div class="table-internal-header"> Jam Kerja & Layanan Pelanggan</div>
+    <table class="table-operasional">
+      <thead>
+        <tr>
+          <th>Hari Kerja</th>
+          <th>Jam Operasional</th>
+          <th>Status Layanan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight: 600; color: #ffffff;">SENIN – JUMAT</td>
+          <td>09.00 – 18.00 WIB</td>
+          <td><div class="status-text-flex"><span class="dot-indicator bg-green"></span> Hari Kerja / Respon Aktif</div></td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #ffffff;">SABTU</td>
+          <td>10.00 – 15.00 WIB</td>
+          <td><div class="status-text-flex"><span class="dot-indicator bg-yellow"></span> Setengah Hari</div></td>
+        </tr>
+        <tr>
+          <td style="font-weight: 600; color: #e74c3c;">MINGGU</td>
+          <td style="color: #e74c3c; font-weight: 600;">TUTUP</td>
+          <td><div class="status-text-flex"><span class="dot-indicator bg-red"></span> <span style="font-style: italic; color: #8b7aaa;">Tidak Menerima Pesanan</span></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  © 2026 ARFELYA — Photocard K-Pop Original & Terpercaya 
+</footer>
+
+<script>
+  // ===== FUNGSI: Pesan item langsung ke halaman reservasi =====
+  function pesanItem(namaItem, harga) {
+    var url = 'reservasi.html?item=' + encodeURIComponent(namaItem) + '&harga=' + encodeURIComponent(harga);
+    window.location.href = url;
+  }
+
+  let activeGroup = 'all';
+  let searchQuery = '';
+
+  const cards = document.querySelectorAll('.product-card');
+  const resultCount = document.getElementById('result-count');
+  const emptyState = document.getElementById('empty-state');
+
+  function filterCards() {
+    let visible = 0;
+    cards.forEach(card => {
+      const group = card.dataset.group;
+      const search = card.dataset.search;
+      const groupMatch = activeGroup === 'all' || group === activeGroup;
+      const searchMatch = searchQuery === '' || search.includes(searchQuery.toLowerCase());
+      if (groupMatch && searchMatch) {
+        card.classList.remove('hidden-card');
+        visible++;
+      } else {
+        card.classList.add('hidden-card');
+      }
+    });
+    resultCount.textContent = visible;
+    emptyState.classList.toggle('visible', visible === 0);
+  }
+
+  document.querySelectorAll('.filter-tag').forEach(tag => {
+    tag.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+      tag.classList.add('active');
+      activeGroup = tag.dataset.group;
+      filterCards();
+    });
+  });
+
+  document.getElementById('search-input').addEventListener('input', e => {
+    searchQuery = e.target.value;
+    filterCards();
+  });
+</script>
+
+</body>
+</html>
